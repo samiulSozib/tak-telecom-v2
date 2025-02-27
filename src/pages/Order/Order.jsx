@@ -166,8 +166,8 @@ export default function Order() {
                   </div>
                   
                   <div className={`text-sm flex flex-row justify-between items-center rounded-md px-2 py-1`}>
-                    <span><span className="text-gray-500">Buy:</span> <strong>{order.bundle.buying_price} {user_info.currency.code}</strong></span>
-                    <span><span className="text-gray-500">Sell:</span> <strong>{order.bundle.selling_price} {user_info.currency.code}</strong></span>
+                    <span><span className="text-gray-500">Buy:</span> <strong>{order.bundle.buying_price} {user_info?.currency?.code}</strong></span>
+                    <span><span className="text-gray-500">Sell:</span> <strong>{order.bundle.selling_price} {user_info?.currency?.code}</strong></span>
                   </div>
 
                 </div>
@@ -203,7 +203,7 @@ export default function Order() {
                 </div>
                 <div className="flex flex-row justify-between">
                   <span className="text-gray-400 text-sm">Order ID</span>
-                  <span className="text-black text-sm">{user_info.currency.code} {selectedOrder.bundle.selling_price}</span>
+                  <span className="text-black text-sm">{user_info?.currency?.code} {selectedOrder.bundle.selling_price}</span>
                 </div>
               </div>
 

@@ -384,7 +384,7 @@ const handleRecharge=()=>{
                 </div>
                 <div className="flex flex-row justify-between">
                   <span className="text-gray-400 text-sm">Order ID</span>
-                  <span className="text-black text-sm">{user_info.currency.code} {selectedOrder.bundle.selling_price}</span>
+                  <span className="text-black text-sm">{user_info?.currency?.code} {selectedOrder.bundle.selling_price}</span>
                 </div>
               </div>
 

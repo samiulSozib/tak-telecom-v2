@@ -128,7 +128,7 @@ export default function Transaction() {
 
                   <div className="flex flex-row justify-between items-center px-2">
                     <span className="text-gray-500">Amount:</span>
-                    <span className="font-bold">{user_info.currency.code} {transaction.amount}</span>
+                    <span className="font-bold">{user_info?.currency?.code} {transaction.amount}</span>
                   </div>
                   
                 </div>

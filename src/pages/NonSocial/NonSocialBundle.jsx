@@ -354,7 +354,7 @@ export default function NonSocialBundle() {
 
                     <div className="flex flex-row justify-between items-center">
                         <span className="text-[12px] font-semibold">Sale:</span>
-                        <span className="text-[12px] font-semibold text-gray-900">{bundle.selling_price} {user_info.currency.code}</span>
+                        <span className="text-[12px] font-semibold text-gray-900">{bundle.selling_price} {user_info?.currency?.code}</span>
                     </div>
                 </div>
             </div>

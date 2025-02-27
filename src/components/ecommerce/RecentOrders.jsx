@@ -238,10 +238,10 @@ export default function RecentOrders() {
                   </div>
                 </TableCell>
                 <TableCell className="py-3 text-gray-500 text-[10px] sm:text-sm dark:text-gray-400">
-                {order.bundle.selling_price} {user_info.currency.code}
+                {order.bundle.selling_price} {user_info?.currency?.code}
                 </TableCell>
                 <TableCell className="hidden sm:inline py-3 text-gray-500 text-[10px] sm:text-sm dark:text-gray-400">
-                {order.bundle.buying_price} {user_info.currency.code}
+                {order.bundle.buying_price} {user_info?.currency?.code}
                 </TableCell>
                 <TableCell className="py-3 text-gray-500 text-[10px] sm:text-sm dark:text-gray-400">
                 {order?.bundle?.validity_type?.toUpperCase()}
