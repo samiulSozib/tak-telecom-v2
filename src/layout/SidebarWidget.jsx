@@ -10,7 +10,7 @@ export default function SidebarWidget() {
           <img src={user_info?.reseller?.profile_image_url} alt="User" />
         </span>
 
-        <span className="block mr-1 font-medium text-theme-sm">{user_info.name}</span>
+        <span className="block mr-1 font-medium text-theme-sm">{user_info?.name}</span>
       
     </div>
   );
