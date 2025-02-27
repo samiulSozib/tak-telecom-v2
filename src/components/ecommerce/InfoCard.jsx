@@ -62,7 +62,7 @@ export default function InfoCard() {
               <GroupIcon/>
             </span>
             <span className="mt-2 font-bold text-gray-800 text-xl dark:text-white/90">
-              {information.loan_balance} {user_info?.currency.code}
+              {information.loan_balance} {user_info?.currency?.code}
             </span>
           </div>
           {/* <Badge color="success">
@@ -85,7 +85,7 @@ export default function InfoCard() {
               <GroupIcon/>
             </span>
             <span className="mt-2 font-bold text-gray-800 text-xl dark:text-white/90">
-              {information.today_sale} {user_info.code}
+              {information.today_sale} {user_info?.currency?.code}
             </span>
           </div>
           {/* <Badge color="success">

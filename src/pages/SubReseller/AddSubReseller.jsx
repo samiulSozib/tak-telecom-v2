@@ -35,7 +35,7 @@ const [isEditing,setIsEditing]=useState(true)
   const { countries, districts, provinces } = useSelector((state) => state.locationReducer)
   const {error,message,loading} =useSelector((state)=>state.subResellerListReducer)
   const { user_info } = useSelector((state) => state.auth)
-  const [state, setState] = useState({ currency_preference_id: user_info.currency_preference_id });
+  const [state, setState] = useState({ currency_preference_id: user_info?.currency_preference_id });
   const [profileImage, setProfileImage] = useState(null);
   const [imageFile, setImageFile] = useState(null)
   const fileInputRef = useRef();
@@ -82,7 +82,7 @@ const [isEditing,setIsEditing]=useState(true)
               country_id: "",
               province_id: "",
               districts_id: "",
-              currency_preference_id: user_info.currency_preference_id,
+              currency_preference_id: user_info?.currency_preference_id,
             });
         
             setProfileImage(null);
@@ -94,7 +94,7 @@ const [isEditing,setIsEditing]=useState(true)
         dispatch(clearMessages())
       }
     }
-  }, [message, error, dispatch,navigate,user_info.currency_preference_id]);
+  }, [message, error, dispatch,navigate,user_info?.currency_preference_id]);
 
   const handleChangeState = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
@@ -281,7 +281,7 @@ const [isEditing,setIsEditing]=useState(true)
                 placeholder="Enter your name"
                 onChange={handleChangeState}
                 disabled
-                value={currency_preference_id || user_info.currency_preference_id}
+                value={currency_preference_id || user_info?.currency_preference_id}
                 className={`font-bold ${isEditing ? "border-gray-400" : "bg-gray-100"} mt-1`}
               />
             </div>
