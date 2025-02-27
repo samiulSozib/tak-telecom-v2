@@ -1,6 +1,6 @@
 export default function FirstCard() {
   return (
-    <div className="h-[250px] rounded-2xl border border-gray-200 bg-[#C8FACD] dark:border-gray-800 dark:bg-white/[0.03] p-4 md:p-6">
+    <div className="h-[270px] rounded-2xl border border-gray-200 bg-[#C8FACD] dark:border-gray-800 dark:bg-white/[0.03] p-4 md:p-6">
       <div className="flex flex-col sm:flex-row items-center">
         
         {/* Text Section */}
