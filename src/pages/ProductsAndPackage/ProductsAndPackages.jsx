@@ -1,0 +1,27 @@
+import PageMeta from "../../components/common/PageMeta";
+import PackageCard from "../../components/ecommerce/PackageCard"
+
+export default function ProductsAndPackages() {
+  return (
+    <>
+      <PageMeta
+        title="React.js Ecommerce Dashboard | TailAdmin - React.js Admin Dashboard Template"
+        description="This is React.js Ecommerce Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
+      />
+      <div className="grid grid-cols-12 gap-4 md:gap-6">
+        
+        <div className="col-span-12 space-y-6 xl:col-span-12">
+            <div>
+                <h3 className="text-black font-medium">Products and Packages</h3>
+                <span className="text-sm text-gray-600">Product and Packages</span>
+            </div>
+            <PackageCard />
+
+        </div>
+
+
+        
+      </div>
+    </>
+  );
+}
