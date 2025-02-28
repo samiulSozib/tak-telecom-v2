@@ -31,6 +31,7 @@ import Profile from "./pages/Profile/Profile";
 import AddSubReseller from "./pages/SubReseller/AddSubReseller";
 import { SetPassword } from "./pages/SubReseller/SetPassword";
 import { ChangeBalance } from "./pages/SubReseller/ChangeBalance";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 export default function App() {
   return (
@@ -40,19 +41,20 @@ export default function App() {
         <Routes>
           {/* Dashboard Layout */}
           <Route element={<AppLayout />}>
-            <Route index path="/" element={<Home />} />
-            <Route path="/product-and-packages" element={<ProductsAndPackages/>} />
-            <Route path="/internet" element={<InternetPackage/>}/>
-            <Route path="/non-social" element={<NonSocialBundle/>}/>
-            <Route path="/social" element={ <SocialPackage/> }/>
-            <Route path="/social-bundle" element={<SocialBundle/>}/>
-            <Route path="/credit-recharge" element={<CreditRecharge/>}/>
-            <Route path="/transactions" element={<Transaction/>}/>
-            <Route path="/orders" element={<Order/>}/>
-            <Route path="/sub-reseller" element={<SubReseller/>}/>
-            <Route path="/add-sub-reseller" element={<AddSubReseller/>}/>
-            <Route path="/sub-reseller-set-password" element={<SetPassword/>}/>
-            <Route path="/sub-reseller-change-balance" element={<ChangeBalance/>}/>
+            <Route index path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            <Route path="/product-and-packages" element={<ProtectedRoute><ProductsAndPackages /></ProtectedRoute>} />
+            <Route path="/internet" element={<ProtectedRoute><InternetPackage /></ProtectedRoute>} />
+            <Route path="/non-social" element={<ProtectedRoute><NonSocialBundle /></ProtectedRoute>} />
+            <Route path="/social" element={<ProtectedRoute><SocialPackage /></ProtectedRoute>} />
+            <Route path="/social-bundle" element={<ProtectedRoute><SocialBundle /></ProtectedRoute>} />
+            <Route path="/credit-recharge" element={<ProtectedRoute><CreditRecharge /></ProtectedRoute>} />
+            <Route path="/transactions" element={<ProtectedRoute><Transaction /></ProtectedRoute>} />
+            <Route path="/orders" element={<ProtectedRoute><Order /></ProtectedRoute>} />
+            <Route path="/sub-reseller" element={<ProtectedRoute><SubReseller /></ProtectedRoute>} />
+            <Route path="/add-sub-reseller" element={<ProtectedRoute><AddSubReseller /></ProtectedRoute>} />
+            <Route path="/sub-reseller-set-password" element={<ProtectedRoute><SetPassword /></ProtectedRoute>} />
+            <Route path="/sub-reseller-change-balance" element={<ProtectedRoute><ChangeBalance /></ProtectedRoute>} />
+          
 
             {/* Others Page */}
             <Route path="/profile" element={<Profile/>}/>

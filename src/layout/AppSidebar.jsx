@@ -163,7 +163,7 @@ const AppSidebar = () => {
               }`}
             >
               <span
-                className={`menu-item-icon-size  ${
+                className={` menu-item-icon-size  ${
                   openSubmenu?.type === menuType && openSubmenu?.index === index
                     ? "menu-item-icon-active"
                     : "menu-item-icon-inactive"
