@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOrders } from "../../redux/actions/orderAction";
 import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
+import Breadcrumb from "../../components/Breadcrumb/Breadcrumb"
+
 
 
 export default function Order() {
@@ -64,11 +66,15 @@ export default function Order() {
         if (page < total_pages) setPage(page + 1);
       };
 
+      const breadcrumbPaths = [
+        { label: t('ORDERS'), href: "/orders" },
+      ];
+
 
   return (
     <div className="grid grid-cols-12 gap-4 md:gap-6">
       <div className="col-span-12 space-y-6 xl:col-span-12">
-        <h3 className="text-black font-medium">{t('ORDERS')}</h3>
+        <Breadcrumb paths={breadcrumbPaths} />
       </div>
 
       

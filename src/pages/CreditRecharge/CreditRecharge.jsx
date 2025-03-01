@@ -8,6 +8,8 @@ import Input from "../../components/form/input/InputField";
 import {placeOrder,confirmPin,clearMessages, customRecharge} from '../../redux/actions/rechargeAction'
 import { getCountries } from "../../redux/actions/locationAction";
 import { toast } from "react-toastify";
+import Breadcrumb from "../../components/Breadcrumb/Breadcrumb"
+
 
 
 
@@ -181,13 +183,15 @@ const handleRecharge=()=>{
     setSelectedOrder(null);
   };
 
- 
+  const breadcrumbPaths = [
+    { label: t('CUSTOM_RECHARGE'), href: "/credit-recharge" },
+  ];
 
 
   return (
     <div className="grid grid-cols-12 gap-4 md:gap-6">
       <div className="col-span-12 space-y-6 xl:col-span-12">
-        <h3 className="text-black font-medium">Credit Recharge</h3>
+        <Breadcrumb paths={breadcrumbPaths} />
       </div>
 
       <div className="border rounded-md bg-white col-span-12 space-y-6 xl:col-span-12 p-4">

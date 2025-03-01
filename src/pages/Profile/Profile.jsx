@@ -3,6 +3,8 @@ import { UserCircleIcon } from "../../icons";
 import { General } from "./General";
 import { ChangePassword } from "./ChangePassword";
 import { useTranslation } from "react-i18next";
+import Breadcrumb from "../../components/Breadcrumb/Breadcrumb"
+
 
 export default function Profile() {
   const {t}=useTranslation()
@@ -14,10 +16,14 @@ export default function Profile() {
 
   const [activeTab, setActiveTab] = useState("General");
 
+  const breadcrumbPaths = [
+    { label: t('PROFILE'), href: "/profile" },
+  ];
+
   return (
     <div className="">
       {/* Profile Heading */}
-      <h3 className="font-semibold text-gray-800 mb-4">Profile</h3>
+        <Breadcrumb paths={breadcrumbPaths} />
 
       {/* Tabs */}
       <div className="border-b">

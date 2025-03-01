@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTransactions } from "../../redux/actions/transactionAction";
 import { format } from "date-fns";
 import { t } from "i18next";
+import Breadcrumb from "../../components/Breadcrumb/Breadcrumb"
+
 
 
 export default function Transaction() {
@@ -44,10 +46,14 @@ export default function Transaction() {
     };
 
 
+    const breadcrumbPaths = [
+      { label: t('TRANSACTIONS'), href: "/transactions" },
+    ];
+
   return (
     <div className="grid grid-cols-12 gap-4 md:gap-6">
       <div className="col-span-12 space-y-6 xl:col-span-12">
-        <h3 className="text-black font-medium">Transactions</h3>
+        <Breadcrumb paths={breadcrumbPaths} />
       </div>
 
       

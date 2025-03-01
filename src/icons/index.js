@@ -71,6 +71,7 @@ import {ReactComponent as Deactive} from './deactive.svg?react'
 import {ReactComponent as ChangeBalance} from './change-balance.svg?react'
 import {ReactComponent as SetPassword} from './set-password.svg?react'
 import {ReactComponent as Delete} from './delete-button-svgrepo-com.svg?react'
+import  {ReactComponent as Home} from './home-4-svgrepo-com.svg?react'
 
 
 
@@ -155,5 +156,6 @@ export {
   Deactive,
   ChangeBalance,
   SetPassword,
-  Delete
+  Delete,
+  Home
 };

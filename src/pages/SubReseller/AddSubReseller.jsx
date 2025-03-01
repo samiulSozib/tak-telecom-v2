@@ -10,6 +10,8 @@ import { getCountries, getDistricts, getProvinces } from "../../redux/actions/lo
 import Select from "../../components/form/Select";
 import Swal from "sweetalert2";
 import { toast, ToastContainer } from "react-toastify";
+import Breadcrumb from "../../components/Breadcrumb/Breadcrumb"
+
 
 
 
@@ -155,12 +157,15 @@ const [isEditing,setIsEditing]=useState(true)
         setIsEditing(!isEditing);
       };
     
-    
+      const breadcrumbPaths = [
+        { label: t('SUB_RESELLER'), href: "/sub-reseller" },
+        {label: t('ADD_SUB_RESELLER'),href:"/add-sub-reseller"}
+      ];
 
   return (
     <div className="">
       <div className="col-span-12 space-y-6 xl:col-span-12 mb-2">
-        <h3 className="text-black font-medium">Add Sub Reseller</h3>
+        <Breadcrumb paths={breadcrumbPaths} />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-3">

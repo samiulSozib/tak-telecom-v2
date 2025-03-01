@@ -5,6 +5,8 @@ import { getSubReseller, getSingleSubReseller, changeSubResellerStatus, deleteSu
 import { ChangeBalance, CloseEye, CloseIcon, Deactive, Delete, Edit, SetPassword } from "../../icons";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
+import Breadcrumb from "../../components/Breadcrumb/Breadcrumb"
+
 
 
 
@@ -107,11 +109,15 @@ export default function SubReseller() {
         if (page < total_pages) setPage(page + 1);
       };
 
+      const breadcrumbPaths = [
+        { label: t('SUB_RESELLER'), href: "/sub-reseller" },
+      ];
+
 
   return (
     <div className="grid grid-cols-12 gap-4 md:gap-6">
       <div className="col-span-12 space-y-6 xl:col-span-12">
-        <h3 className="text-black font-medium">Sub Reseller</h3>
+        <Breadcrumb paths={breadcrumbPaths} />
       </div>
 
       <div className="border rounded-md bg-white col-span-12 space-y-6 xl:col-span-12 p-4">

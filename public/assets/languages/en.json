@@ -211,6 +211,7 @@
     "MOBILE_CHARGING":"Mobile Charging",
     "CONVERSATION_PACKAGE":"Conversation Package",
     "SOCIAL_BUNDLE":"Social Bundle",
+    "SOCIAL_PACKAGES":"Social Packages",
     "SEARCH_HERE":"Search Here ....",
     "ENTER_PIN":"Enter PIN..",
     "ENTER_TRANSFER_AMOUNT":"Enter Transfer Amount",
@@ -252,5 +253,4 @@
     "ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RESELLER":"Are you sure you want to delete this reseller?",
     "ARE_YOU_SURE_YOU_WANT_TO_DE_ACTIVE_THIS_RESELLER": "Are you sure you want to deactivate this reseller?",
     "ARE_YOU_SURE_YOU_WANT_TO_ACTIVE_THIS_RESELLER": "Are you sure you want to activate this reseller?"
-
 }

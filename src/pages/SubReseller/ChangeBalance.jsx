@@ -7,6 +7,8 @@ import { ToastContainer, toast } from 'react-toastify'; // Correct import for To
 import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 import Input from '../../components/form/input/InputField';
 import { changeSubResellerBalance, setSubResellerPassword } from '../../redux/actions/subResellerAction';
+import Breadcrumb from "../../components/Breadcrumb/Breadcrumb"
+
 
 export const ChangeBalance = () => {
     const dispatch = useDispatch();
@@ -38,9 +40,14 @@ export const ChangeBalance = () => {
         }
       };
 
+      const breadcrumbPaths = [
+        { label: t('SUB_RESELLER'), href: "/sub-reseller" },
+        {label: t('CHANGE_BALANCE'),href:"/"}
+      ];
+
     return (
         <div className="col-span-12 space-y-6 xl:col-span-12">
-            <h1>Change Balance for {reseller?.reseller_name}</h1>
+                <Breadcrumb paths={breadcrumbPaths} />
 
             <div 
                 className={`grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-lg transition-all duration-300 ${

@@ -1,7 +1,11 @@
 import PageMeta from "../../components/common/PageMeta";
 import PackageCard from "../../components/ecommerce/PackageCard"
+import Breadcrumb from "../../components/Breadcrumb/Breadcrumb"
 
 export default function ProductsAndPackages() {
+  const breadcrumbPaths = [
+    { label: "Product and Packages", href: "/product-and-packages" },
+  ];
   return (
     <>
       <PageMeta
@@ -12,8 +16,9 @@ export default function ProductsAndPackages() {
         
         <div className="col-span-12 space-y-6 xl:col-span-12">
             <div>
-                <h3 className="text-black font-medium">Products and Packages</h3>
-                <span className="text-sm text-gray-600">Product and Packages</span>
+
+              <Breadcrumb paths={breadcrumbPaths} />
+
             </div>
             <PackageCard />
 

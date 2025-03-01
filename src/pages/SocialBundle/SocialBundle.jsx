@@ -10,6 +10,8 @@ import Input from "../../components/form/input/InputField";
 import { Dialpad } from "../../icons";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
+import Breadcrumb from "../../components/Breadcrumb/Breadcrumb"
+
 
 
 export default function SocialBundle() {
@@ -128,6 +130,12 @@ export default function SocialBundle() {
         if (page < total_pages) setPage(page + 1);
       };
 
+      const breadcrumbPaths = [
+        { label: t("PRODUCT_PACKAGE"), href: "/product-and-packages" },
+        {label:t('SOCIAL_PACKAGES'),href:'/social'},
+        {label:t('SOCIAL_BUNDLE'),href:'/social-bundle'}
+      ];
+
   return (
     <>
       <PageMeta
@@ -138,8 +146,7 @@ export default function SocialBundle() {
         {/* title section */}
         <div className="col-span-12 space-y-6 xl:col-span-12">
             <div>
-                <h3 className="text-black font-medium">Internet Packages</h3>
-                <span className="text-sm text-gray-600">Internet Packages </span>
+              <Breadcrumb paths={breadcrumbPaths} />
             </div>
 
         </div>
