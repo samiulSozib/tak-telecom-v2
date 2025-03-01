@@ -272,7 +272,7 @@ export default function Order() {
               <div className={`${selectedOrder.status === 2? "bg-red-100 border-red-500": selectedOrder.status === 1? "bg-green-100 border-green-500": "bg-yellow-100 border-yellow-500"} border rounded-lg p-3 flex items-center m-3`}>
                 {/* Icon on the Left */}
                 <img 
-                  src="/images/img/whatsapp.png" 
+                  src={selectedOrder?.bundle.service.company.company_logo} 
                   alt="Logo" 
                   className="h-12 w-12 rounded-lg object-contain"
                 />
