@@ -114,7 +114,7 @@ export default function UserDropdown() {
                   fill=""
                 />
               </svg>
-              Profile
+              {t("PROFILE")}
             </DropdownItem>
           </li>
           {/* <li>
@@ -187,7 +187,7 @@ export default function UserDropdown() {
               fill=""
             />
           </svg>
-          Sign out
+          {t('LOG_OUT')}
         </button>
       </Dropdown>
     </div>

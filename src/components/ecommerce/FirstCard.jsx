@@ -21,12 +21,12 @@ export default function FirstCard() {
         <div className="hidden md:flex relative items-center justify-center p-4 sm:p-3">
           {/* Background Image */}
           <div className="relative flex items-center justify-center w-[150px] h-[150px] sm:w-[200px] sm:h-[200px] rounded-full">
-            <img src="/public/images/img/background.png" alt="Background" className="absolute inset-0 w-full h-full object-contain" />
+            <img src="/images/img/background.png" alt="Background" className="absolute inset-0 w-full h-full object-contain" />
           </div>
           
           {/* WhatsApp Icon */}
           <div className="absolute flex items-center justify-center w-[90px] h-[90px] sm:w-[120px] sm:h-[120px] bg-green-500 rounded-full shadow-lg border-4 border-white">
-            <img className="w-[60px] h-[60px] sm:w-[80px] sm:h-[80px] object-contain" src="/public/images/img/whatsapp.png" alt="WhatsApp Icon" />
+            <img className="w-[60px] h-[60px] sm:w-[80px] sm:h-[80px] object-contain" src="/images/img/whatsapp.png" alt="WhatsApp Icon" />
           </div>
         </div>
 
