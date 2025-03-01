@@ -247,7 +247,7 @@ export default function Order() {
           <div className={`border ${selectedOrder.status === 2 ? "border-red-500" : selectedOrder.status === 1 ? "border-green-500" : "border-yellow-500"} rounded-md flex flex-col gap-3`}>
 
               <div className="flex items-center justify-center mt-3">
-                <img src={selectedOrder.status===0?'/public/images/img/Pending.png':selectedOrder.status===1?"/public/images/img/Success.png":"/public/images/img/Unsuccess.png"} alt="" className="w-[70px] h-[70px] object-contain"/>
+                <img src={selectedOrder.status===0?'/images/img/Pending.png':selectedOrder.status===1?"/images/img/Success.png":"/images/img/Unsuccess.png"} alt="" className="w-[70px] h-[70px] object-contain"/>
               </div>
 
               <div className="flex flex-col gap-2 p-3">
@@ -272,7 +272,7 @@ export default function Order() {
               <div className={`${selectedOrder.status === 2? "bg-red-100 border-red-500": selectedOrder.status === 1? "bg-green-100 border-green-500": "bg-yellow-100 border-yellow-500"} border rounded-lg p-3 flex items-center m-3`}>
                 {/* Icon on the Left */}
                 <img 
-                  src="/public/images/img/whatsapp.png" 
+                  src="/images/img/whatsapp.png" 
                   alt="Logo" 
                   className="h-12 w-12 rounded-lg object-contain"
                 />

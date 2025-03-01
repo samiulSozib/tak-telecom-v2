@@ -15,20 +15,6 @@ import { toast, ToastContainer } from "react-toastify";
 
 
 
-const transactions = [
-  { id: 1, country: "AF", number: "3567894", flag: "/public/images/img/company.png" },
-  { id: 2, country: "IR", number: "09152169657", flag: "/public/images/img/company.png" },
-  { id: 3, country: "TR", number: "09152169657", flag: "/public/images/img/company.png" },
-  { id: 4, country: "AF", number: "3567894", flag: "/public/images/img/company.png" },
-  { id: 5, country: "IR", number: "09152169657", flag: "/public/images/img/company.png" },
-  { id: 6, country: "TR", number: "09152169657", flag: "/public/images/img/company.png" },
-  { id: 7, country: "AF", number: "3567894", flag: "/public/images/img/company.png" },
-  { id: 8, country: "IR", number: "09152169657", flag: "/public/images/img/company.png" },
-  { id: 9, country: "TR", number: "09152169657", flag: "/public/images/img/company.png" },
-  { id: 10, country: "AF", number: "3567894", flag: "/public/images/img/company.png" },
-  { id: 11, country: "IR", number: "09152169657", flag: "/public/images/img/company.png" },
-  { id: 12, country: "TR", number: "09152169657", flag: "/public/images/img/company.png" },
-];
 
 export default function AddSubReseller() {
 const [isEditing,setIsEditing]=useState(true)
