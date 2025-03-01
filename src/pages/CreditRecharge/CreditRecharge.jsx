@@ -97,11 +97,11 @@ const handleRecharge=()=>{
     return;
   }
   Swal.fire({
-      title: "Are you sure about your transfer?",
+      title: t('ARE_YOU_SURE_ABOUT_YOUR_TRANSFER'),
       showCancelButton: true,
       showConfirmButton: true,
-      confirmButtonText: "Confirmation",
-      cancelButtonText: "Cancel",
+      confirmButtonText: t("CONFIRMATION"),
+      cancelButtonText: t("CANCEL"),
       customClass: {
         popup: "rounded-xl p-6",
         title: "text-lg font-semibold text-gray-900",
@@ -157,7 +157,7 @@ const handleRecharge=()=>{
           </div>
         `,
         showConfirmButton: true,
-        confirmButtonText: "Close",
+        confirmButtonText: "CLOSE",
         customClass: {
           popup: "rounded-xl p-6",
           confirmButton: "bg-white border border-gray-300 text-gray-900 font-medium rounded-full px-6 py-2 shadow-md",
@@ -212,7 +212,7 @@ const handleRecharge=()=>{
                   pattern="[0-9]*"
                   error={phoneNumberError}
                   hint={phoneNumberError}
-                  placeholder="Enter Number...."
+                  placeholder={t("ENTER_YOUR_NUMBER")}
                   helperText={phoneNumberError}
                   required
                   inputProps={{
@@ -235,12 +235,12 @@ const handleRecharge=()=>{
                     type="text"
                     inputMode="numeric"
                     pattern="[0-9]*"
-                    placeholder="Transfer amount"
+                    placeholder={t('ENTER_TRANSFER_AMOUNT')}
                     onChange={(e)=>setAmount(e.target.value)}
                     className="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-4 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring focus:ring-brand-500/10 dark:border-gray-800 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-white/80">
-                    AFN
+                    {user_info?.currency?.code}
                 </span>
                 </div>
             </form>
@@ -249,7 +249,7 @@ const handleRecharge=()=>{
             {/* Submit Button */}
             <div className="flex items-center">
             <button onClick={handleRecharge} style={{borderRadius:'50px'}} className="h-11 w-full bg-green-500 text-white text-sm font-semibold hover:bg-green-600 transition">
-                Send to destination
+                {t('SEND_TO_DESTINATION')}
             </button>
             </div>
         </div>
@@ -325,12 +325,12 @@ const handleRecharge=()=>{
             {/* Submit Button */}
             <div className="flex items-center">
                 <button style={{borderRadius:'50px'}} className="h-8 w-full bg-blue-800 text-white text-sm font-semibold hover:bg-green-600 transition">
-                    Apply Filter
+                    {t("APPLY_FILTER")}
                 </button>
             </div>
             <div className="flex items-center">
                 <button style={{borderRadius:'50px'}} className="border border-red-500 h-8 w-full bg-white text-red-500 text-sm font-semibold hover:bg-green-600 transition">
-                    Remove Filter
+                    {t("CLEAR_FILTER")}
                 </button>
             </div>
         </div>
@@ -343,7 +343,7 @@ const handleRecharge=()=>{
               <div className="flex items-center space-x-3">
                 <img className="w-12 h-12 rounded" src={order?.bundle?.service?.company?.company_logo} alt={order?.bundle?.service?.company?.name} />
                 <div>
-                  <p className="text-sm font-medium">Order Id: #({order.id})</p>
+                  <p className="text-sm font-medium">{t('ORDER_ID')}: #({order.id})</p>
                   <p className="text-xs text-gray-500">{order.rechargeble_account}</p>
                 </div>
               </div>
@@ -351,7 +351,7 @@ const handleRecharge=()=>{
                 className="text-blue-600 text-sm"
                 onClick={() => setExpanded(expanded === order.id ? null : order.id)}
               >
-                {expanded === order.id ? "Close ▲" : "See more ▼"}
+                {expanded === order.id ? t("CLOSE") + " ▲" : t("SEE_MORE") + " ▼"}
               </button>
             </div>
 
@@ -371,19 +371,19 @@ const handleRecharge=()=>{
 
               <div className="flex flex-col gap-2 p-3">
                 <div className="flex flex-row justify-between">
-                  <span className="text-gray-400 text-sm">Bundle Title</span>
+                  <span className="text-gray-400 text-sm">{t("BUNDLE_TITLE")}</span>
                   <span className="text-black text-sm">{selectedOrder.bundle.bundle_title}</span>
                 </div>
                 <div className="flex flex-row justify-between">
-                  <span className="text-gray-400 text-sm">Phone Number</span>
+                  <span className="text-gray-400 text-sm">{t("PHONE_NUMBER")}</span>
                   <span className="text-black text-sm">{selectedOrder.rechargeble_account}</span>
                 </div>
                 <div className="flex flex-row justify-between">
-                  <span className="text-gray-400 text-sm">Validity Type</span>
+                  <span className="text-gray-400 text-sm">{t("VALIDITY")}</span>
                   <span className="text-black text-sm">{(selectedOrder?.bundle?.validity_type)?.toUpperCase()}</span>
                 </div>
                 <div className="flex flex-row justify-between">
-                  <span className="text-gray-400 text-sm">Order ID</span>
+                  <span className="text-gray-400 text-sm">{t("ORDER_ID")}</span>
                   <span className="text-black text-sm">{user_info?.currency?.code} {selectedOrder.bundle.selling_price}</span>
                 </div>
               </div>
@@ -399,13 +399,13 @@ const handleRecharge=()=>{
                 {/* Date & Time Section */}
                 <div className="flex flex-col ml-3 w-full">
                   <div className="flex items-center justify-between w-full text-gray-600 text-sm">
-                    <span className="font-medium">Date:</span>
-                    <span className="font-semibold text-gray-800">01-05-2025</span>
+                    <span className="font-medium">{t("DATE")}</span>
+                    <span className="font-semibold text-gray-800">{new Date(selectedOrder?.created_at).toLocaleDateString()}</span>
                   </div>
                   
                   <div className="flex items-center justify-between w-full text-gray-600 text-sm mt-1">
-                    <span className="font-medium">Time:</span>
-                    <span className="font-semibold text-gray-800">1:59 PM</span>
+                    <span className="font-medium">{t("TIME")}</span>
+                    <span className="font-semibold text-gray-800">{new Date(selectedOrder?.created_at).toLocaleTimeString()}</span>
                   </div>
                 </div>
               </div>
@@ -413,12 +413,12 @@ const handleRecharge=()=>{
             </div>
 
             <div className="flex flex-row gap-3 justify-between items-center">
-              <button className="rounded-[50px] bg-blue-700 m-3 px-5 py-2 w-[120px] text-white text-center">Share</button>
-              <button className="rounded-[50px] bg-white m-3 px-5 py-2 w-[120px] text-blue-700 text-center border-2 border-blue-700">Download</button>
+              <button className="rounded-[50px] bg-blue-700 m-3 px-5 py-2 w-[120px] text-white text-center">{t("SHARE")}</button>
+              <button className="rounded-[50px] bg-white m-3 px-5 py-2 w-[120px] text-blue-700 text-center border-2 border-blue-700">{t("DOWNLOAD")}</button>
             </div>
 
             <div className="flex flex-row justify-center">
-              <button onClick={handleClose} className="border-2 border-gray-500 w-full rounded-[50px] py-2 text-black font-bold">Close</button>
+              <button onClick={handleClose} className="border-2 border-gray-500 w-full rounded-[50px] py-2 text-black font-bold">{t("CLOSE")}</button>
             </div>
 
           </div>

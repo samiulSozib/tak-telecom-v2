@@ -25,7 +25,7 @@ export default function NonSocialBundle() {
 
     const dispatch=useDispatch()
     const {serviceList}=useSelector((state)=>state.serviceListReducer)
-    const {bundleList,total_items}=useSelector((state)=>state.bundleListReducer)
+    const {bundleList,total_items,per_page,current_page,total_pages}=useSelector((state)=>state.bundleListReducer)
     const {user_info}=useSelector((state)=>state.auth)
     const [visibleRows, setVisibleRows] = useState({});
     const [validity, setValidity] = useState("");
@@ -33,8 +33,6 @@ export default function NonSocialBundle() {
     const [searchTag,setSearchTag]=useState("")
     const [number,setNumber]=useState("")
     const [phoneNumberError, setPhoneNumberError] = useState("");
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
     const [selectedBundle, setSelectedBundle] = useState(null);
     const [isModalOpen, setModalOpen] = useState(false);
     const [pin,setPin]=useState("")
@@ -42,24 +40,29 @@ export default function NonSocialBundle() {
     const [pinLength,setPinLength]=useState(4)
     const { message,error,loading, pinConfirmed, orderPlaced } = useSelector((state) => state.rechargeReducer);
     const {countries}=useSelector((state)=>state.locationReducer)
+    const [page, setPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [from,setForm]=useState(0)
+    const [to,setTo]=useState(0)
     
     useEffect(()=>{
         dispatch(getServices(categoryId,countryId))
-        dispatch(getBundles(page+1,rowsPerPage,countryId,validity,companyId,categoryId,searchTag))
+        dispatch(getBundles(page,rowsPerPage,countryId,validity,companyId,categoryId,searchTag))
         dispatch(getCountries())
       },[dispatch,validity,companyId,searchTag,page,rowsPerPage,categoryId,countryId])
 
 
 
-    const categories = [
-        { value: '', label: 'ALL' },
-        { value: 'unlimited', label: 'UNLIMITED'},
-        { value: 'monthly', label: 'MONTHLY' },
-        { value: 'weekly', label: 'WEEKLY' },
-        { value: 'daily', label: 'DAILY' },
-        { value: 'hourly', label: 'HOURLY' },
-        { value: 'nightly', label: 'NIGHTLY' },
-      ]
+      const categories = [
+        { value: '', label: t('ALL') },
+        { value: 'unlimited', label: t('UNLIMITED') },
+        { value: 'monthly', label: t('MONTHLY') },
+        { value: 'weekly', label: t('WEEKLY') },
+        { value: 'daily', label: t('DAILY') },
+        { value: 'hourly', label: t('HOURLY') },
+        { value: 'nightly', label: t('NIGHTLY') },
+      ];
+      
 
     const filteredServiceList = useMemo(() => {
         if ((number.length<3 && number.length>=0)) return serviceList; // Return all services if no companyId is set
@@ -160,7 +163,7 @@ export default function NonSocialBundle() {
               </div>
             `,
             showConfirmButton: true,
-            confirmButtonText: "Close",
+            confirmButtonText: t("CLOSE"),
             customClass: {
               popup: "rounded-xl p-6",
               confirmButton: "swal-confirm-button"
@@ -227,6 +230,24 @@ export default function NonSocialBundle() {
         }
       };
 
+      useEffect(() => {
+        if (current_page && per_page && total_items) {
+          const fromValue = (current_page - 1) * per_page + 1;
+          const toValue = Math.min(current_page * per_page, total_items);
+      
+          setForm(fromValue);
+          setTo(toValue);
+        }
+      }, [current_page, per_page, total_items]);
+    
+      const goToPreviousPage = () => {
+        if (page > 1) setPage(page - 1);
+      };
+    
+      const goToNextPage = () => {
+        if (page < total_pages) setPage(page + 1);
+      };
+
   return (
     <>
       <PageMeta
@@ -255,7 +276,7 @@ export default function NonSocialBundle() {
                         value={searchTag}
                         onChange={(e) =>setSearchTag(e.target.value)}
                         type="text"
-                        placeholder="Search Here...."
+                        placeholder={t('SEARCH_HERE')}
                         required
                         inputProps={{
                             min: 0,
@@ -285,7 +306,7 @@ export default function NonSocialBundle() {
                           pattern="[0-9]*"
                           error={phoneNumberError}
                           hint={phoneNumberError}
-                          placeholder="Enter Number...."
+                          placeholder={t("ENTER_YOUR_NUMBER")}
                           helperText={phoneNumberError}
                           required
                           inputProps={{
@@ -362,6 +383,45 @@ export default function NonSocialBundle() {
             ))}
                
             </div>
+          {/* pagination */}
+            <div className="flex flex-wrap items-center justify-end px-4 py-3 bg-white border-t-2 rounded-lg shadow-md space-x-4">
+              {/* Rows per page selection */}
+              <div className="flex items-center space-x-2 text-gray-600">
+                <span>Rows per page:</span>
+                <select className="p-1 min-w-[60px] text-gray-700">
+                  <option>5</option>
+                  <option>10</option>
+                  <option>20</option>
+                </select>
+              </div>
+
+              {/* Pagination info */}
+              <div className="text-gray-700 mx-4">{from}-{to} of {total_items}</div>
+
+              {/* Navigation buttons */}
+              <div className="flex items-center space-x-2">
+              <button 
+              className={`p-2 ${page === 1 ? "text-gray-300" : "text-gray-500 hover:text-gray-700"}`}
+              onClick={goToPreviousPage}
+              disabled={page === 1}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button 
+              className={`p-2 ${page === total_pages ? "text-gray-300" : "text-gray-700 hover:text-gray-900"}`}
+              onClick={goToNextPage}
+              disabled={page === total_pages}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+              </div>
+            </div>
+
+        {/* pagination */}
         </div>
 
        
@@ -380,17 +440,17 @@ export default function NonSocialBundle() {
             
             <div className="flex flex-col w-full">
               <div className="flex flex-row justify-between items-center">
-                <span className="text-[14px] font-medium text-gray-800">Bundle Title</span>
+                <span className="text-[14px] font-medium text-gray-800">{t("BUNDLE_TITLE")}</span>
                 <span className="text-[12px] text-purple-600 font-medium">{selectedBundle?.bundle_title}</span>
               </div>
       
               <div className="flex flex-row justify-between items-center">
-                <span className="text-[14px] font-semibold">Sale:</span>
+                <span className="text-[14px] font-semibold">{t("SELL")}</span>
                 <span className="text-[12px] font-semibold text-gray-900">{selectedBundle?.selling_price} {user_info?.currency?.code}</span>
               </div>
               
               <div className="flex flex-row justify-between items-center">
-                <span className="text-[14px] font-medium text-gray-800">Validity</span>
+                <span className="text-[14px] font-medium text-gray-800">{t("VALIDITY")}</span>
                 <span className="text-[12px] text-purple-600 font-medium">{selectedBundle?.validity_type?.charAt(0).toUpperCase() + selectedBundle?.validity_type?.slice(1)}</span>
               </div>
 
@@ -416,7 +476,7 @@ export default function NonSocialBundle() {
                 pattern="[0-9]*"
                 error={Boolean(phoneNumberError)}
                 hint={phoneNumberError}
-                placeholder="Enter Number...."
+                placeholder={t("ENTER_YOUR_NUMBER")}
                 helperText={phoneNumberError}
                 required
                 inputProps={{
@@ -434,7 +494,7 @@ export default function NonSocialBundle() {
                 value={pin}
                 onChange={(e) => setPin(e.target.value)}
                 type="password"
-                placeholder="Enter PIN...."
+                placeholder={t('ENTER_PIN')}
                 required
                 max={4}
                 className={`rounded-lg border border-gray-200'} bg-transparent py-2.5 pl-12 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:outline-none focus:ring focus:border-brand-300 focus:ring-brand-500/10 dark:border-gray-800 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800`}
@@ -448,8 +508,8 @@ export default function NonSocialBundle() {
             </div>
           ):(
           <div className="flex flex-row justify-between mt-2">
-            <button disabled={!!phoneNumberError || !number} onClick={checkPIN} className="bg-green-500 rounded-[50px] px-3 py-2 w-[100px] text-white">Confirm</button>
-            <button onClick={handleCloseModal} className="bg-white text-red-500 px-3 py-2 w-[100px] border border-red-500 rounded-[50px]">Cancel</button>
+            <button disabled={!!phoneNumberError || !number} onClick={checkPIN} className="bg-green-500 rounded-[50px] px-3 py-2 w-[100px] text-white">{t('CONFIRM')}</button>
+            <button onClick={handleCloseModal} className="bg-white text-red-500 px-3 py-2 w-[100px] border border-red-500 rounded-[50px]">{t("CANCEL")}</button>
           </div>
         )}
       

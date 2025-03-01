@@ -56,20 +56,20 @@ export default function SignInForm() {
         <div>
           <div className="mb-5 sm:mb-8">
             <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
-              Sign In
+              {t("SIGN_IN")}
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Enter your email and password to sign in!
+            {t("ENTER_YOUR_EMAIL_AND_PASSWORD_TO_SIGN_IN")}
             </p>
           </div>
           <form onSubmit={formik.handleSubmit}>
             <div className="space-y-6">
               {/* Email Field */}
               <div>
-                <Label>Email <span className="text-error-500">*</span></Label>
+                <Label>{t("EMAIL")} <span className="text-error-500">*</span></Label>
                 <Input
                   name="email"
-                  placeholder=""
+                  placeholder={t('ENTER_YOUR_EMAIL')}
                   value={formik.values.email}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
@@ -78,12 +78,12 @@ export default function SignInForm() {
 
               {/* Password Field */}
               <div>
-                <Label>Password <span className="text-error-500">*</span></Label>
+                <Label>{t("PASSWORD")} <span className="text-error-500">*</span></Label>
                 <div className="relative">
                   <Input
                     name="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
+                    placeholder={t('ENTER_YOUR_PASSWORD')}
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -106,20 +106,20 @@ export default function SignInForm() {
               {/* Remember Me & Forgot Password */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <Checkbox
+                  {/* <Checkbox
                     checked={isChecked}
                     onChange={(e) => setIsChecked(e.target.checked)}
-                  />
-                  <span className="block font-normal text-gray-700 text-theme-sm dark:text-gray-400">
+                  /> */}
+                  {/* <span className="block font-normal text-gray-700 text-theme-sm dark:text-gray-400">
                     Keep me logged in
-                  </span>
+                  </span> */}
                 </div>
-                <Link
+                {/* <Link
                   to="/reset-password"
                   className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
                 >
                   Forgot password?
-                </Link>
+                </Link> */}
               </div>
 
               {/* Sign In Button */}
@@ -130,7 +130,8 @@ export default function SignInForm() {
                   size="sm"
                   disabled={loading}
                 >
-                  {loading ? "Signing in..." : "Sign in"}
+                  {loading ? t('SIGNING_IN') : t('SIGN_IN')}
+
                 </Button>
               </div>
             </div>

@@ -2,6 +2,7 @@ import axios from "axios";
 import { LOGOUT, SIGN_IN_FAIL, SIGN_IN_REQUEST, SIGN_IN_SUCCESS } from "../constants/authConstant";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import i18next from "i18next"; // Import i18next
 
 
 const login_url=`https://taktelecom-dashboard.milliekit.com/api/reseller/login`
@@ -18,9 +19,10 @@ export const signIn=(singInInfo)=>{
             
             dispatch({type:SIGN_IN_SUCCESS,payload:{api_token,user_info}})
             Swal.fire({
-                title: "Good job!",
-                text: "Login Success",
-                icon: "success"
+                title: i18next.t("GOOD_JOB"),
+                text: i18next.t("LOGIN_SUCCESS"),
+                icon: "success",
+                
               });
             
         }catch(error){
@@ -30,7 +32,7 @@ export const signIn=(singInInfo)=>{
             dispatch({type:SIGN_IN_FAIL,payload:errorMessage})
             Swal.fire({
                 icon: "error",
-                title: "Login Fail",
+                title: i18next.t("LOGIN_FAIL"),
                 text: errorMessage,
               });
             
@@ -44,8 +46,8 @@ export const logout = () => {
       localStorage.removeItem('token');
       dispatch({ type: LOGOUT });
       Swal.fire({
-        title: "Good job!",
-        text: "Logout Success",
+        title: i18next.t("GOOD_JOB"),
+        text: i18next.t("LOGOUT_SUCCESS"),
         icon: "success"
       });
     };

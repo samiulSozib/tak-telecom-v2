@@ -7,12 +7,14 @@ import {
 import Badge from "../ui/badge/Badge";
 import { useEffect } from "react";
 import {dashboardData} from '../../redux/actions/dashboardAction'
+import { useTranslation } from "react-i18next";
 
 
 export default function InfoCard() {
   const dispatch = useDispatch()
   const { information } = useSelector((state) => state.dashboardReducer);
   const { user_info } = useSelector((state) => state.auth);
+  const {t}=useTranslation()
 
 
   useEffect(()=>{
@@ -27,7 +29,7 @@ export default function InfoCard() {
       <div className="h-[150px] rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
         <div className="flex items-center justify-center w-12 h-12">
         <span className="text-sm text-gray-500 dark:text-gray-400">
-              Balance
+              {t('BALANCE')}
             </span>
         </div>
 
@@ -52,7 +54,7 @@ export default function InfoCard() {
       <div className="h-[150px] rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
         <div className="flex items-center justify-center w-12 h-12">
         <span className="text-sm text-gray-500 dark:text-gray-400">
-              Loan Balance
+              {t('LOAN_BALANCE')}
             </span>
         </div>
 
@@ -75,7 +77,7 @@ export default function InfoCard() {
       <div className="h-[150px] rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
         <div className="flex items-center justify-center w-12 h-12">
         <span className="text-sm text-gray-500 dark:text-gray-400">
-              Sale
+              {t('SALE')}
             </span>
         </div>
 
@@ -98,7 +100,7 @@ export default function InfoCard() {
       <div className="h-[150px] rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
         <div className="flex items-center justify-center w-12 h-12">
         <span className="text-sm text-gray-500 dark:text-gray-400">
-              Profit
+              {t('PROFIT')}
             </span>
         </div>
 

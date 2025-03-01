@@ -4,30 +4,13 @@ import { useNavigate } from "react-router";
 import { getSubReseller, getSingleSubReseller, changeSubResellerStatus, deleteSubReseller } from '../../redux/actions/subResellerAction';
 import { ChangeBalance, CloseEye, CloseIcon, Deactive, Delete, Edit, SetPassword } from "../../icons";
 import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
 
 
-
-
-const transactions = [
-  { id: 1, country: "AF", number: "3567894", flag: "/public/images/img/company.png" },
-  { id: 2, country: "IR", number: "09152169657", flag: "/public/images/img/company.png" },
-  { id: 3, country: "TR", number: "09152169657", flag: "/public/images/img/company.png" },
-  { id: 4, country: "AF", number: "3567894", flag: "/public/images/img/company.png" },
-  { id: 5, country: "IR", number: "09152169657", flag: "/public/images/img/company.png" },
-  { id: 6, country: "TR", number: "09152169657", flag: "/public/images/img/company.png" },
-  { id: 7, country: "AF", number: "3567894", flag: "/public/images/img/company.png" },
-  { id: 8, country: "IR", number: "09152169657", flag: "/public/images/img/company.png" },
-  { id: 9, country: "TR", number: "09152169657", flag: "/public/images/img/company.png" },
-  { id: 10, country: "AF", number: "3567894", flag: "/public/images/img/company.png" },
-  { id: 11, country: "IR", number: "09152169657", flag: "/public/images/img/company.png" },
-  { id: 12, country: "TR", number: "09152169657", flag: "/public/images/img/company.png" },
-];
 
 export default function SubReseller() {
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
     const dispatch = useDispatch();
-    const { subResellerList, total_items, singleSubReseller } = useSelector((state) => state.subResellerListReducer);
+    const { subResellerList, total_items, singleSubReseller,per_page,current_page,total_pages } = useSelector((state) => state.subResellerListReducer);
     const { user_info } = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const [searchTag, setSearchTag] = useState("");
@@ -37,11 +20,22 @@ export default function SubReseller() {
     const [expanded, setExpanded] = useState(null);
     const [isEditing,setIsEditing]=useState(false)
     const [selectedSubReseller, setSelectedSubReseller] = useState(null);
+    const [view,setView]=useState(false)
+    const [selectedDetails,setSelectedDetails]=useState(null)
+    const {t}=useTranslation()
+    const [page, setPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [from,setForm]=useState(0)
+    const [to,setTo]=useState(0)
  
 
     useEffect(() => {
-        dispatch(getSubReseller());
+        dispatch(getSubReseller(page,rowsPerPage));
       }, [dispatch, page, rowsPerPage]);
+
+      useEffect(()=>{
+        console.log(singleSubReseller)
+      },[dispatch,singleSubReseller])
 
       const addSubReseller=()=>{
         navigate('/add-sub-reseller')
@@ -51,13 +45,13 @@ export default function SubReseller() {
         setIsEditing(false)
       
         Swal.fire({
-          title: selectedSubReseller.status === 1?"Are you sure you want to de-active this reseller":'Are you sure you want to active this reseller',
+          title: selectedSubReseller.status === 1?t('ARE_YOU_SURE_YOU_WANT_TO_DE_ACTIVE_THIS_RESELLER'):t('ARE_YOU_SURE_YOU_WANT_TO_ACTIVE_THIS_RESELLER'),
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
-          confirmButtonText: "YES",
-          cancelButtonText: "CANCEL",
+          confirmButtonText:  t("YES"),
+          cancelButtonText: t("CANCEL"),
         }).then((result) => {
           if (result.isConfirmed) {
             handleChangeStatusSubReseller(); // Execute the status change if confirmed
@@ -72,13 +66,13 @@ export default function SubReseller() {
       const handleDeleteConfirmation = () => {
         setIsEditing(false)
         Swal.fire({
-          title: 'Are you sure you want to delete this reseller?',
+          title: t('ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RESELLER'),
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
-          confirmButtonText: 'YES',
-          cancelButtonText: 'CANCEL',
+          confirmButtonText:  t("YES"),
+          cancelButtonText:  t("CANCEL"),
         }).then((result) => {
           if (result.isConfirmed) {
             handleDeleteSubReseller(); 
@@ -89,6 +83,30 @@ export default function SubReseller() {
       const handleDeleteSubReseller = async () => {
         await dispatch(deleteSubReseller(selectedSubReseller.id));
       };
+
+      const handleSingleSubReseller=(resellerId)=>{
+        dispatch(getSingleSubReseller(resellerId))
+        setView(true)
+      }
+
+      useEffect(() => {
+        if (current_page && per_page && total_items) {
+          const fromValue = (current_page - 1) * per_page + 1;
+          const toValue = Math.min(current_page * per_page, total_items);
+      
+          setForm(fromValue);
+          setTo(toValue);
+        }
+      }, [current_page, per_page, total_items]);
+    
+      const goToPreviousPage = () => {
+        if (page > 1) setPage(page - 1);
+      };
+    
+      const goToNextPage = () => {
+        if (page < total_pages) setPage(page + 1);
+      };
+
 
   return (
     <div className="grid grid-cols-12 gap-4 md:gap-6">
@@ -146,7 +164,7 @@ export default function SubReseller() {
             {/* Submit Button */}
             <div className="flex items-center">
             <button onClick={addSubReseller} style={{borderRadius:'50px'}} className="h-11 w-full bg-green-500 text-white text-sm font-semibold hover:bg-green-600 transition">
-                Add Sub Reseller
+                {t("ADD_SUB_RESELLER")}
             </button>
             </div>
         </div>
@@ -169,7 +187,7 @@ export default function SubReseller() {
                     </div>
                   </div>
                   <div className="flex gap-3">
-                    <CloseEye className="cursor-pointer h-8 w-8" onClick={() => setExpanded(expanded === sub_reseller.id ? null : sub_reseller.id)}/>
+                    <CloseEye onClick={()=>handleSingleSubReseller(sub_reseller.id)} className="cursor-pointer h-8 w-8"/>
                     <Edit onClick={()=>{setSelectedSubReseller(sub_reseller),setIsEditing(true)}} className="cursor-pointer h-8 w-8"/>
                   </div>
                   
@@ -177,60 +195,90 @@ export default function SubReseller() {
                 </div>
               </div>
 
-              {/* Expanded Section (Inserted below the row of the clicked card) */}
-              {expanded === sub_reseller.id && (
-                <div className="col-span-3 bg-gray-100 shadow-md rounded-lg p-4">
-                  <p className="text-gray-700">
-                    Transfer status: <span className="text-green-500">Successful</span>
-                  </p>
-                  <p className="text-gray-700">Amount: 197/67 IRR</p>
-                  <p className="text-gray-700">Date: 01-05-2025</p>
-                  <p className="text-gray-700">Time: 12:30 PM</p>
-                </div>
-              )}
+              
             </>
           ))}
         </div>
+
+        {/* pagination */}
+        <div className="flex flex-wrap items-center justify-end px-4 py-3 bg-white border-t-2 rounded-lg shadow-md space-x-4">
+          {/* Rows per page selection */}
+          <div className="flex items-center space-x-2 text-gray-600">
+            <span>Rows per page:</span>
+            <select className="p-1 min-w-[60px] text-gray-700">
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+            </select>
+          </div>
+
+          {/* Pagination info */}
+          <div className="text-gray-700 mx-4">{from}-{to} of {total_items}</div>
+
+          {/* Navigation buttons */}
+          <div className="flex items-center space-x-2">
+          <button 
+          className={`p-2 ${page === 1 ? "text-gray-300" : "text-gray-500 hover:text-gray-700"}`}
+          onClick={goToPreviousPage}
+          disabled={page === 1}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button 
+          className={`p-2 ${page === total_pages ? "text-gray-300" : "text-gray-700 hover:text-gray-900"}`}
+          onClick={goToNextPage}
+          disabled={page === total_pages}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+          </div>
+        </div>
+
+        {/* pagination */}
 
       </div>
       {isEditing && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-4 rounded-lg shadow-lg w-full sm:w-[90%] md:w-[80%] lg:w-80 text-left m-2">
-        <div className="flex flex-col divide-y divide-gray-300">
-          {/* Deactivate Option */}
-          <button 
-            onClick={handleConfirmStatusChange} 
-            className={`flex items-center gap-3 py-4 px-6 rounded-lg transition-all duration-300 
-                ${selectedSubReseller.status===1 ? "bg-green-500 text-white hover:bg-green-600" : "bg-red-300 text-white hover:bg-red-300"}
-            `}
-        >
-            <span className="text-lg">
-                <Deactive className="h-[24px] w-[24px]" />
-            </span>
-            <span className="text-sm font-medium">
-                {selectedSubReseller.status===1 ? "Active" : "Deactivated"}
-            </span>
-        </button>
-
-          {/* Change Balance Option */}
-          <button onClick={()=>navigate("/sub-reseller-change-balance",{state:{reseller:selectedSubReseller}})} className="flex items-center gap-3 py-4 px-6 text-gray-700 hover:bg-gray-100">
-            <span className="text-lg"><ChangeBalance className="h-[24px] w-[24px]"/></span>
-            <span className="text-sm font-medium">Change balance</span>
+          <div className="flex flex-col divide-y divide-gray-300">
+            {/* Deactivate Option */}
+            <button 
+              onClick={handleConfirmStatusChange} 
+              className={`flex items-center gap-3 py-4 px-6 rounded-lg transition-all duration-300 
+                  ${selectedSubReseller.status===1 ? "bg-green-500 text-white hover:bg-green-600" : "bg-red-300 text-white hover:bg-red-300"}
+              `}
+          >
+              <span className="text-lg">
+                  <Deactive className="h-[24px] w-[24px]" />
+              </span>
+              <span className="text-sm font-medium">
+                  {selectedSubReseller.status===1 ? "Active" : "Deactivated"}
+              </span>
           </button>
 
-          {/* Set Password Option */}
-          <button onClick={()=>navigate("/sub-reseller-set-password",{state:{reseller:selectedSubReseller}})} className="flex items-center gap-3 py-4 px-6 text-gray-700 hover:bg-gray-100">
-            <span className="text-lg"><SetPassword className="h-[24px] w-[24px]"/></span>
-            <span className="text-sm font-medium">Set Password</span>
-          </button>
+            {/* Change Balance Option */}
+            <button onClick={()=>navigate("/sub-reseller-change-balance",{state:{reseller:selectedSubReseller}})} className="flex items-center gap-3 py-4 px-6 text-gray-700 hover:bg-gray-100">
+              <span className="text-lg"><ChangeBalance className="h-[24px] w-[24px]"/></span>
+              <span className="text-sm font-medium">{t("CHANGE_BALANCE")}</span>
+            </button>
 
-          {/* Delete Option */}
-          <button onClick={handleDeleteConfirmation} className="flex items-center gap-3 py-4 px-6 text-gray-700 hover:bg-gray-100">
-            <span className="text-lg"><Delete className="h-[24px] w-[24px]"/></span>
-            <span className="text-sm font-medium">Delete</span>
-          </button>
-          
-        </div>
+            {/* Set Password Option */}
+            <button onClick={()=>navigate("/sub-reseller-set-password",{state:{reseller:selectedSubReseller}})} className="flex items-center gap-3 py-4 px-6 text-gray-700 hover:bg-gray-100">
+              <span className="text-lg"><SetPassword className="h-[24px] w-[24px]"/></span>
+              <span className="text-sm font-medium">{t('SET_PASSWORD')}</span>
+            </button>
+
+            {/* Delete Option */}
+            <button onClick={handleDeleteConfirmation} className="flex items-center gap-3 py-4 px-6 text-gray-700 hover:bg-gray-100">
+              <span className="text-lg"><Delete className="h-[24px] w-[24px]"/></span>
+              <span className="text-sm font-medium">{t("DELETE")}</span>
+            </button>
+            
+          </div>
 
         {/* Close Button */}
         <button
@@ -242,6 +290,90 @@ export default function SubReseller() {
         </div>
         </div>
       )}
+
+      {view && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-2 rounded-lg shadow-lg w-full sm:w-[90%] md:w-[90%] lg:w-[60%] text-left">
+            <div className="rounded-md border border-gray-400 p-5">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+
+                <div className="flex flex-col w-full">
+                  <div className="text-gray-600 text-sm w-full flex justify-center">
+                    <span className="font-medium">{t('TODAY_ORDER')}</span>
+                  </div>
+                  
+                  <div className="text-gray-600 text-sm mt-1 w-full flex justify-center bg-gray-200 rounded-md py-2">
+                    <span className="font-semibold text-gray-800">{singleSubReseller?.reseller?.today_orders}</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col w-full">
+                  <div className="text-gray-600 text-sm w-full flex justify-center">
+                    <span className="font-medium">{t('TOTAL_ORDER')}</span>
+                  </div>
+                  
+                  <div className="text-gray-600 text-sm mt-1 w-full flex justify-center bg-gray-200 rounded-md py-2">
+                    <span className="font-semibold text-gray-800">{singleSubReseller?.reseller?.total_orders}</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col w-full">
+                  <div className="text-gray-600 text-sm w-full flex justify-center">
+                    <span className="font-medium">{t('TODAY_SALE')}</span>
+                  </div>
+                  
+                  <div className="text-gray-600 text-sm mt-1 w-full flex justify-center bg-gray-200 rounded-md py-2">
+                    <span className="font-semibold text-gray-800">{singleSubReseller?.today_sale}</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col w-full">
+                  <div className="text-gray-600 text-sm w-full flex justify-center">
+                    <span className="font-medium">{t('TOTAL_SALE')}</span>
+                  </div>
+                  
+                  <div className="text-gray-600 text-sm mt-1 w-full flex justify-center bg-gray-200 rounded-md py-2">
+                    <span className="font-semibold text-gray-800">{singleSubReseller?.total_sale}</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col w-full">
+                  <div className="text-gray-600 text-sm w-full flex justify-center">
+                    <span className="font-medium">{t('TODAY_PROFIT')}</span>
+                  </div>
+                  
+                  <div className="text-gray-600 text-sm mt-1 w-full flex justify-center bg-gray-200 rounded-md py-2">
+                    <span className="font-semibold text-gray-800">{singleSubReseller?.today_profit}</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col w-full">
+                  <div className="text-gray-600 text-sm w-full flex justify-center">
+                    <span className="font-medium">{t('TOTAL_PROFIT')}</span>
+                  </div>
+                  
+                  <div className="text-gray-600 text-sm mt-1 w-full flex justify-center bg-gray-200 rounded-md py-2">
+                    <span className="font-semibold text-gray-800">{singleSubReseller?.total_profit}</span>
+                  </div>
+                </div>
+
+              </div>
+                
+                <div className="flex flex-row justify-between mt-3 bg-gray-200 rounded-md py-2 px-1">
+                  <h1>{t('ACCOUNT_BALANCE')}</h1>
+                  <h1>{singleSubReseller?.reseller?.balance} {user_info.currency.code}</h1>
+                </div>
+
+            </div>
+          <button
+            onClick={()=>setView(false)}
+            className="w-full mt-4 py-3 text-center text-gray-700 font-medium bg-white border-2 rounded-[50px] hover:bg-gray-200"
+          >
+            {t("CLOSE")}
+          </button>
+          </div>
+        </div>
+       )}
     </div>
   );
 }

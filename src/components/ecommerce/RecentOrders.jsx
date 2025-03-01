@@ -9,6 +9,7 @@ import Badge from "../ui/badge/Badge";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrders } from '../../redux/actions/orderAction';
+import { useTranslation } from "react-i18next";
 
 
 // Define the TypeScript interface for the table rows
@@ -68,20 +69,18 @@ export default function RecentOrders() {
   const dispatch=useDispatch()
   const { orderList, total_items,per_page,current_page,total_pages } = useSelector((state) => state.orderListReducer);
   const { user_info } = useSelector((state) => state.auth);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [from,setForm]=useState(0)
   const [to,setTo]=useState(0)
+  const {t}=useTranslation()
   
 
   useEffect(() => {
-    dispatch(getOrders(page + 1, rowsPerPage));
+    dispatch(getOrders(page, rowsPerPage));
   }, [dispatch, page, rowsPerPage]);
 
-  useEffect(()=>{
-    console.log(current_page)
-    console.log(total_items)
-  },[dispatch])
+
 
   useEffect(() => {
     if (current_page && per_page && total_items) {
@@ -107,7 +106,7 @@ export default function RecentOrders() {
       <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between bg-gray-200 rounded-md">
         <div className="p-3">
           <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
-            Recent Orders
+            {t('RECENT_ORDERS')}
           </h3>
         </div>
         
@@ -182,31 +181,31 @@ export default function RecentOrders() {
                 isHeader
                 className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                Name
+                {t('NAME')}
               </TableCell>
               <TableCell
                 isHeader
                 className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                Sale
+                {t('SALE')}
               </TableCell>
               <TableCell
                 isHeader
                 className="hidden sm:inline py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                Buy
+                {t("BUY")}
               </TableCell>
               <TableCell
                 isHeader
                 className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                Validity
+                {t('VALIDITY')}
               </TableCell>
               <TableCell
                 isHeader
                 className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                Status
+                {t("STATUS")}
               </TableCell>
               
             </TableRow>
@@ -269,7 +268,8 @@ export default function RecentOrders() {
             ))}
           </TableBody>
         </Table>
-        <div className="flex flex-wrap items-center justify-end px-4 py-3 bg-white border rounded-lg shadow-md space-x-4">
+        {/* pagination */}
+        <div className="flex flex-wrap items-center justify-end px-4 py-3 bg-white border-t-2 rounded-lg shadow-md space-x-4">
           {/* Rows per page selection */}
           <div className="flex items-center space-x-2 text-gray-600">
             <span>Rows per page:</span>

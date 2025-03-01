@@ -31,6 +31,9 @@ const initialState={
     total_items:0,
     message:null,
     singleSubReseller: null,
+    per_page:0,
+    current_page:0,
+    total_pages:0
 }
 
 const subResellerListReducer=(state=initialState,action)=>{
@@ -39,7 +42,13 @@ const subResellerListReducer=(state=initialState,action)=>{
         case SUB_RESELLER_LIST_REQUEST:
             return {...state,loading:true}
         case SUB_RESELLER_LIST_SUCCESS:
-            return {...state,loading:false,subResellerList:action.payload.resellers,total_items:action.payload.total_items}
+            return {...state,loading:false,
+                subResellerList:action.payload.resellers,
+                total_items:action.payload.total_items,
+                per_page:action.payload.per_page,
+                current_page:action.payload.current_page,
+                total_pages:action.payload.total_pages
+            }
         case SUB_RESELLER_LIST_FAIL:
             return {...state,loading:false,error:action.payload}
 

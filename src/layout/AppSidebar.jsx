@@ -17,6 +17,8 @@ import {
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 import SidebarWidget from "./SidebarWidget";
+import { useTranslation } from "react-i18next";
+import SidebarBottom from "./SidebarBottom";
 
 
 
@@ -28,32 +30,32 @@ const navItems = [
   // },
   {
     icon: <Dashboard />,
-    name: "Dashboard",
+    name: "DASHBOARD",
     path: "/",
   },
   {
     icon: <Cart />,
-    name: "Products and Packages",
+    name: "PRODUCT_PACKAGE",
     path: "/product-and-packages",
   },
   {
     icon: <ECommerce />,
-    name: "Credit Recharge",
+    name: "CUSTOM_RECHARGE",
     path: "/credit-recharge",
   },
   {
     icon: <Banking />,
-    name: "Transactions",
+    name: "TRANSACTIONS",
     path: "/transactions",
   },
   {
     icon: <Invoice />,
-    name: "Orders",
+    name: "ORDERS",
     path: "/orders",
   },
   {
     icon: <User_Group />,
-    name: "Sub-Reseller",
+    name: "SUB_RESELLER",
     path: "/sub-reseller",
   },
   
@@ -62,17 +64,17 @@ const navItems = [
 const othersItems= [
   {
     icon: <UserIcon />,
-    name: "Profile",
+    name: "PROFILE",
     path: "/profile",
   },
   {
     icon: <UserCircleIcon />,
-    name: "Terms and Policy",
+    name: "TERMS_AND_CONDITIONS",
     path: "/terms-and-policy",
   },
   {
     icon: <UserIcon />,
-    name: "Help Center",
+    name: "HELP_CENTER",
     path: "/help-center",
   },
 ];
@@ -83,6 +85,14 @@ const othersItems= [
 const AppSidebar = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const location = useLocation();
+  const { t } = useTranslation();
+  const { i18n } = useTranslation();
+  const [isRtl, setIsRtl] = useState(false);
+
+  useEffect(() => {
+    setIsRtl(i18n.dir() === "rtl");
+  }, [i18n.language]);
+
 
   const [openSubmenu, setOpenSubmenu] = useState(false);
   const [subMenuHeight, setSubMenuHeight] = useState(
@@ -148,7 +158,7 @@ const AppSidebar = () => {
   const renderMenuItems = (items,menuType) => (
     <ul className="flex flex-col gap-1">
       {items.map((nav, index) => (
-        <li key={nav.name}>
+        <li key={t(nav.name)}>
           {nav.subItems ? (
             <button
               onClick={() => handleSubmenuToggle(index, menuType)}
@@ -172,7 +182,7 @@ const AppSidebar = () => {
                 {nav.icon}
               </span>
               {(isExpanded || isHovered || isMobileOpen) && (
-                <span className="menu-item-text">{nav.name}</span>
+                <span className="menu-item-text">{t(nav.name)}</span>
               )}
               {(isExpanded || isHovered || isMobileOpen) && (
                 <ChevronDownIcon
@@ -203,7 +213,7 @@ const AppSidebar = () => {
                   {nav.icon}
                 </span>
                 {(isExpanded || isHovered || isMobileOpen) && (
-                  <span className="text-sm font-normal menu-item-text">{nav.name}</span>
+                  <span className="text-sm font-normal menu-item-text">{t(nav.name)}</span>
                 )}
               </Link>
             )
@@ -270,23 +280,18 @@ const AppSidebar = () => {
 
   return (
     <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
-        ${
-          isExpanded || isMobileOpen
-            ? "w-[290px]"
-            : isHovered
-            ? "w-[290px]"
-            : "w-[90px]"
-        }
-        ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
-        lg:translate-x-0`}
+      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
+        ${isExpanded || isMobileOpen ? "w-[290px]" : isHovered ? "w-[290px]" : "w-[90px]"}
+        ${isMobileOpen ? "translate-x-0" : isRtl ? "translate-x-full" : "-translate-x-full"}
+        lg:translate-x-0
+        ${isRtl ? "right-0 border-l border-r-0" : "left-0 border-r border-l-0"}
+      `}
       onMouseEnter={() => !isExpanded && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
+      {/* Logo Section */}
       <div
-        className={`py-8 flex ${
-          !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
-        }`}
+        className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"}`}
       >
         <Link to="/">
           {isExpanded || isHovered || isMobileOpen ? (
@@ -307,54 +312,40 @@ const AppSidebar = () => {
               />
             </>
           ) : (
-            <img
-              src="/images/logo/logo.svg"
-              alt="Logo"
-              width={32}
-              height={32}
-            />
+            <img src="/images/logo/logo.svg" alt="Logo" width={32} height={32} />
           )}
         </Link>
       </div>
+
+      {/* Sidebar Content */}
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
-      {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
+        {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
             <div>
               <h2
                 className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
-                  !isExpanded && !isHovered
-                    ? "lg:justify-center"
-                    : "justify-start"
+                  !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
                 }`}
               >
-                {isExpanded || isHovered || isMobileOpen ? (
-                  ""
-                ) : (
-                  <HorizontaLDots className="size-6" />
-                )}
+                {isExpanded || isHovered || isMobileOpen ? "" : <HorizontaLDots className="size-6" />}
               </h2>
               {renderMenuItems(navItems, "main")}
             </div>
-            <div className="">
+
+            <div>
               <h2
                 className={`mb-4 font-bold text-xs uppercase flex leading-[20px] text-black-400 ${
-                  !isExpanded && !isHovered
-                    ? "lg:justify-center"
-                    : "justify-start"
+                  !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
                 }`}
               >
-                {isExpanded || isHovered || isMobileOpen ? (
-                  "General"
-                ) : (
-                  <HorizontaLDots />
-                )}
+                {isExpanded || isHovered || isMobileOpen ? "General" : <HorizontaLDots />}
               </h2>
-              {renderMenuItems(othersItems,'others')}
+              {renderMenuItems(othersItems, "others")}
             </div>
           </div>
         </nav>
-        
+        {isExpanded || isHovered || isMobileOpen ? <SidebarBottom /> : null}
       </div>
     </aside>
   );

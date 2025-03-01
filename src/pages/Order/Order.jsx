@@ -6,15 +6,17 @@ import { useTranslation } from "react-i18next";
 
 
 export default function Order() {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [filterStatus, setFilterStatus] = useState("");
   const dispatch = useDispatch();
-  const { orderList, total_items } = useSelector((state) => state.orderListReducer);
+  const { orderList, total_items,per_page,current_page,total_pages } = useSelector((state) => state.orderListReducer);
   const { user_info } = useSelector((state) => state.auth);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const { t, i18n } = useTranslation();
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [from,setForm]=useState(0)
+  const [to,setTo]=useState(0)
 
   const isRtl = i18n.language === "ar" || i18n.language === "fa" || i18n.language === "ps";
 
@@ -39,15 +41,34 @@ export default function Order() {
 
 
     useEffect(() => {
-        dispatch(getOrders(page + 1, rowsPerPage, filterStatus,""));
+        dispatch(getOrders(page, rowsPerPage, filterStatus,""));
       }, [dispatch, page, rowsPerPage, filterStatus]);
 
+
+
+      useEffect(() => {
+        if (current_page && per_page && total_items) {
+          const fromValue = (current_page - 1) * per_page + 1;
+          const toValue = Math.min(current_page * per_page, total_items);
+      
+          setForm(fromValue);
+          setTo(toValue);
+        }
+      }, [current_page, per_page, total_items]);
+    
+      const goToPreviousPage = () => {
+        if (page > 1) setPage(page - 1);
+      };
+    
+      const goToNextPage = () => {
+        if (page < total_pages) setPage(page + 1);
+      };
 
 
   return (
     <div className="grid grid-cols-12 gap-4 md:gap-6">
       <div className="col-span-12 space-y-6 xl:col-span-12">
-        <h3 className="text-black font-medium">Orders</h3>
+        <h3 className="text-black font-medium">{t('ORDERS')}</h3>
       </div>
 
       
@@ -94,7 +115,7 @@ export default function Order() {
                         className="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-4 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring focus:ring-brand-500/10 dark:border-gray-800 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                     />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-white/80">
-                        AFN
+                    {user_info?.currency?.code}
                     </span>
                     </div>
                 </form>
@@ -110,7 +131,7 @@ export default function Order() {
                         className="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-4 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring focus:ring-brand-500/10 dark:border-gray-800 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                     />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-white/80">
-                        AFN
+                        {user_info?.currency?.code}
                     </span>
                     </div>
                 </form>
@@ -122,12 +143,12 @@ export default function Order() {
             {/* Submit Button */}
             <div className="flex items-center">
                 <button style={{borderRadius:'50px'}} className="h-8 w-full bg-blue-800 text-white text-sm font-semibold hover:bg-green-600 transition">
-                    Apply Filter
+                    {t("APPLY_FILTER")}
                 </button>
             </div>
             <div className="flex items-center">
                 <button style={{borderRadius:'50px'}} className="border border-red-500 h-8 w-full bg-white text-red-500 text-sm font-semibold hover:bg-green-600 transition">
-                    Remove Filter
+                {t("CLEAR_FILTER")}
                 </button>
             </div>
         </div>
@@ -140,22 +161,22 @@ export default function Order() {
                 <div className={`flex gap-1  flex-col bg-white shadow-md rounded-lg border ${order.status === 2 ? 'border-red-500' : order.status===1? 'border-yellow-300' : 'border-green-500'} p-2`}>
 
                   <div className={`${order.status === 2 ? 'bg-red-500' : order.status===1? 'bg-green-500' : 'bg-yellow-500'} font-medium text-white flex flex-row justify-between items-center rounded-t-md px-2 py-1`}>
-                    <span>Order Id (# {order.id})</span>
+                    <span>{t("ORDER_ID")} (# {order.id})</span>
                     <span className="">{format(new Date(order.created_at), 'dd-MM-yyyy')}</span>
                   </div>
 
                   <div className={`text-sm flex flex-row justify-between items-center rounded-md px-2 py-1`}>
-                    <span className="text-gray-500">Bundle Title</span>
+                    <span className="text-gray-500">{t("BUNDLE_TITLE")}</span>
                     <span className="font-bold">{order.bundle.bundle_title}</span>
                   </div>
 
                   <div className={`text-sm flex flex-row justify-between items-center rounded-md px-2 py-1`}>
-                    <span className="text-gray-500">Rechargeable Account</span>
+                    <span className="text-gray-500">{t("RECHARGEABLE_ACCOUNT")}</span>
                     <span className="font-bold">{order.rechargeble_account}</span>
                   </div>
 
                   <div className={`text-sm flex flex-row justify-between items-center rounded-md px-2 py-1`}>
-                    <span className="text-gray-500">Transaction Status</span>
+                    <span className="text-gray-500">{t("TRANSACTION_STATUS")}</span>
                     <div
                       className={`${
                         order.status === 2 ? "bg-red-500" : order.status === 1 ? "bg-green-500" : "bg-yellow-500"
@@ -166,8 +187,8 @@ export default function Order() {
                   </div>
                   
                   <div className={`text-sm flex flex-row justify-between items-center rounded-md px-2 py-1`}>
-                    <span><span className="text-gray-500">Buy:</span> <strong>{order.bundle.buying_price} {user_info?.currency?.code}</strong></span>
-                    <span><span className="text-gray-500">Sell:</span> <strong>{order.bundle.selling_price} {user_info?.currency?.code}</strong></span>
+                    <span><span className="text-gray-500">{t("BUY")}:</span> <strong>{order.bundle.buying_price} {user_info?.currency?.code}</strong></span>
+                    <span><span className="text-gray-500">{t("SELL")}:</span> <strong>{order.bundle.selling_price} {user_info?.currency?.code}</strong></span>
                   </div>
 
                 </div>
@@ -176,8 +197,49 @@ export default function Order() {
               
             </div>
           ))}
+
+          
+
+        </div>
+          {/* pagination */}
+        <div className="flex flex-wrap items-center justify-end px-4 py-3 bg-white border-t-2 rounded-lg shadow-md space-x-4">
+          {/* Rows per page selection */}
+          <div className="flex items-center space-x-2 text-gray-600">
+            <span>Rows per page:</span>
+            <select className="p-1 min-w-[60px] text-gray-700">
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+            </select>
+          </div>
+
+          {/* Pagination info */}
+          <div className="text-gray-700 mx-4">{from}-{to} of {total_items}</div>
+
+          {/* Navigation buttons */}
+          <div className="flex items-center space-x-2">
+          <button 
+          className={`p-2 ${page === 1 ? "text-gray-300" : "text-gray-500 hover:text-gray-700"}`}
+          onClick={goToPreviousPage}
+          disabled={page === 1}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button 
+          className={`p-2 ${page === total_pages ? "text-gray-300" : "text-gray-700 hover:text-gray-900"}`}
+          onClick={goToNextPage}
+          disabled={page === total_pages}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+          </div>
         </div>
 
+        {/* pagination */}
       </div>
       {modalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -190,19 +252,19 @@ export default function Order() {
 
               <div className="flex flex-col gap-2 p-3">
                 <div className="flex flex-row justify-between">
-                  <span className="text-gray-400 text-sm">Bundle Title</span>
+                  <span className="text-gray-400 text-sm">{t("BUNDLE_TITLE")}</span>
                   <span className="text-black text-sm">{selectedOrder.bundle.bundle_title}</span>
                 </div>
                 <div className="flex flex-row justify-between">
-                  <span className="text-gray-400 text-sm">Phone Number</span>
+                  <span className="text-gray-400 text-sm">{t("PHONE_NUMBER")}</span>
                   <span className="text-black text-sm">{selectedOrder.rechargeble_account}</span>
                 </div>
                 <div className="flex flex-row justify-between">
-                  <span className="text-gray-400 text-sm">Validity Type</span>
+                  <span className="text-gray-400 text-sm">{t("VALIDITY")}</span>
                   <span className="text-black text-sm">{(selectedOrder?.bundle?.validity_type)?.toUpperCase()}</span>
                 </div>
                 <div className="flex flex-row justify-between">
-                  <span className="text-gray-400 text-sm">Order ID</span>
+                  <span className="text-gray-400 text-sm">{t("ORDER_ID")}</span>
                   <span className="text-black text-sm">{user_info?.currency?.code} {selectedOrder.bundle.selling_price}</span>
                 </div>
               </div>
@@ -218,13 +280,13 @@ export default function Order() {
                 {/* Date & Time Section */}
                 <div className="flex flex-col ml-3 w-full">
                   <div className="flex items-center justify-between w-full text-gray-600 text-sm">
-                    <span className="font-medium">Date:</span>
-                    <span className="font-semibold text-gray-800">01-05-2025</span>
+                    <span className="font-medium">{t("DATE")}</span>
+                    <span className="font-semibold text-gray-800">{new Date(selectedOrder?.created_at).toLocaleDateString()}</span>
                   </div>
                   
                   <div className="flex items-center justify-between w-full text-gray-600 text-sm mt-1">
-                    <span className="font-medium">Time:</span>
-                    <span className="font-semibold text-gray-800">1:59 PM</span>
+                    <span className="font-medium">{t("TIME")}</span>
+                    <span className="font-semibold text-gray-800">{new Date(selectedOrder?.created_at).toLocaleTimeString()}</span>
                   </div>
                 </div>
               </div>
@@ -232,17 +294,18 @@ export default function Order() {
             </div>
 
             <div className="flex flex-row gap-3 justify-between items-center">
-              <button className="rounded-[50px] bg-blue-700 m-3 px-5 py-2 w-[120px] text-white text-center">Share</button>
-              <button className="rounded-[50px] bg-white m-3 px-5 py-2 w-[120px] text-blue-700 text-center border-2 border-blue-700">Download</button>
+              <button className="rounded-[50px] bg-blue-700 m-3 px-5 py-2 w-[120px] text-white text-center">{t("SHARE")}</button>
+              <button className="rounded-[50px] bg-white m-3 px-5 py-2 w-[120px] text-blue-700 text-center border-2 border-blue-700">{t("DOWNLOAD")}</button>
             </div>
 
             <div className="flex flex-row justify-center">
-              <button onClick={handleClose} className="border-2 border-gray-500 w-full rounded-[50px] py-2 text-black font-bold">Close</button>
+              <button onClick={handleClose} className="border-2 border-gray-500 w-full rounded-[50px] py-2 text-black font-bold">{t("CLOSE")}</button>
             </div>
 
           </div>
         </div>
       )}
+      
     </div>
   );
 }

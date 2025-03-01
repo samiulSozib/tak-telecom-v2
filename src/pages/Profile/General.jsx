@@ -58,7 +58,6 @@ export const General = () => {
         <div className="border rounded-md items-center flex flex-col justify-center h-[350px] gap-2">
           <img className="h-[120px] w-[120px] rounded-[50px] border border-gray-700 shadow-md" src={information?.user_info?.profile_image_url} alt="" />
           <h5 className="text-sm text-gray-500 p-2 text-center">
-            Allowed *.jpeg, *.jpg, *.png, *.gif Max size of 3.1 MB
           </h5>
         </div>
 
@@ -67,7 +66,7 @@ export const General = () => {
 
         <div className="flex flex-col bg-white rounded-md p-3 h-[450px] gap-2 justify-between">
           <div>
-              <Label htmlFor="">Reseller Name</Label>
+              <Label htmlFor="">{t('RESELLER_NAME')}</Label>
               <Input
                 type="text"
                 id=""
@@ -80,7 +79,7 @@ export const General = () => {
               />
             </div>
             <div>
-              <Label htmlFor="">Contact Name</Label>
+              <Label htmlFor="">{t("CONTACT_NAME")}</Label>
               <Input
                 type="text"
                 id=""
@@ -93,7 +92,7 @@ export const General = () => {
               />
             </div>
             <div>
-              <Label htmlFor="">Phone</Label>
+              <Label htmlFor="">{t("PHONE")}</Label>
               <Input
                 type="text"
                 id=""
@@ -106,7 +105,7 @@ export const General = () => {
               />
             </div>
             <div>
-              <Label htmlFor="">Email</Label>
+              <Label htmlFor="">{t("EMAIL")}</Label>
               <Input
                 type="text"
                 id=""
@@ -119,7 +118,7 @@ export const General = () => {
               />
             </div>
             <div>
-              <Label htmlFor="">Total Sale</Label>
+              <Label htmlFor="">{t("TOTAL_SALE")}</Label>
               <Input
                 type="text"
                 id=""
@@ -137,7 +136,7 @@ export const General = () => {
 
         <div className="flex flex-col bg-white rounded-md p-3 h-[450px] gap-2 justify-between">
             <div>
-              <Label htmlFor="">Balance</Label>
+              <Label htmlFor="">{t("BALANCE")}</Label>
               <Input
                 type="text"
                 id=""
@@ -150,7 +149,7 @@ export const General = () => {
               />
             </div>
             <div>
-              <Label htmlFor="">Loan Balance</Label>
+              <Label htmlFor="">{t("LOAN_BALANCE")}</Label>
               <Input
                 type="text"
                 id=""
@@ -163,7 +162,7 @@ export const General = () => {
               />
             </div>
             <div>
-              <Label htmlFor="">Total Sold Amount</Label>
+              <Label htmlFor="">{t("TOTAL_SOLD_AMOUNT")}</Label>
               <Input
                 type="text"
                 id=""
@@ -176,7 +175,7 @@ export const General = () => {
               />
             </div>
             <div>
-              <Label htmlFor="">Total Revenue</Label>
+              <Label htmlFor="">{t("TOTAL_REVENUE")}</Label>
               <Input
                 type="text"
                 id=""
@@ -189,7 +188,7 @@ export const General = () => {
               />
             </div>
             <div>
-              <Label htmlFor="">Total Profit</Label>
+              <Label htmlFor="">{t("TOTAL_PROFIT")}</Label>
               <Input
                 type="text"
                 id=""

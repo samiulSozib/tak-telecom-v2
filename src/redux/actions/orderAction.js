@@ -23,7 +23,7 @@ export const getOrders=(page,items_per_page,filterStatus,order_type)=>{
                 }
             };
             const response=await axios.get(orders_url,config)
-            //console.log(response)
+            console.log(response)
 
             const {orders}=response.data.data
             const total_items=response.data.payload.pagination.total_items

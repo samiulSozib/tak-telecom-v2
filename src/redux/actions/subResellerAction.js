@@ -29,13 +29,13 @@ import {
 import Swal from "sweetalert2";
 
 
-export const getSubReseller=()=>{
+export const getSubReseller=(page,items_per_page)=>{
     return async (dispatch)=>{
         
         dispatch({type:SUB_RESELLER_LIST_REQUEST})
         try{
             const token = localStorage.getItem('token');
-            const sub_reseller_url=`https://taktelecom-dashboard.milliekit.com/api/reseller/sub-resellers`
+            const sub_reseller_url=`https://taktelecom-dashboard.milliekit.com/api/reseller/sub-resellers? page=${page} & items_per_page=${items_per_page}`
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}` 
@@ -44,10 +44,13 @@ export const getSubReseller=()=>{
             const response=await axios.get(sub_reseller_url,config)
             const {resellers}=response.data.data
             const total_items=response.data.payload.pagination.total
+            const per_page=response.data.payload.pagination.items_per_page 
+            const current_page=response.data.payload.pagination.from
+            const total_pages=response.data.payload.pagination.page
             
            
-            console.log(resellers)
-            dispatch({type:SUB_RESELLER_LIST_SUCCESS,payload:{resellers,total_items}})
+            //console.log(response)
+            dispatch({type:SUB_RESELLER_LIST_SUCCESS,payload:{resellers,total_items,per_page,current_page,total_pages}})
         }catch(error){
             dispatch({type:SUB_RESELLER_LIST_FAIL,payload:error.message})
         }
@@ -234,7 +237,7 @@ export const deleteSubReseller=(sub_reseller_id)=>{
             const {message}=response.data
             
            
-            //console.log(response)
+            console.log(response)
             Swal.fire({
                 title: "Success!",
                 text: message,
@@ -243,7 +246,7 @@ export const deleteSubReseller=(sub_reseller_id)=>{
             dispatch({type:DELETE_SUB_RESELLER_SUCCESS,payload:{message,sub_reseller_id}})
             //toast.success(message)
         }catch(error){
-            //toast.error(error.message)
+            toast.error(error)
             Swal.fire({
                 title: "error!",
                 text: "Failed to delete",

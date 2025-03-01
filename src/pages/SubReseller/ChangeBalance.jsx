@@ -57,7 +57,7 @@ export const ChangeBalance = () => {
                             onChange={() => setTransactionType("credit")}
                             className="form-radio text-blue-500"
                         />
-                        <span>Credit</span>
+                        <span>{t("CREDIT")}</span>
                     </label>
                 </div>
                 <div className="flex items-center space-x-4">
@@ -70,7 +70,7 @@ export const ChangeBalance = () => {
                             onChange={() => setTransactionType("debit")}
                             className="form-radio text-red-500"
                         />
-                        <span>Debit</span>
+                        <span>{t("DEBIT")}</span>
                     </label>
                 </div>
             </div>
@@ -89,7 +89,7 @@ export const ChangeBalance = () => {
                                 error={balanceError}
                                 hint={balanceError}
                                 onChange={(e) => setNewBalance(e.target.value)} 
-                                placeholder="Enter New Password"
+                                placeholder={t("ENTER_TRANSFER_AMOUNT")}
                                 className="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-4 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring focus:ring-brand-500/10 dark:border-gray-800 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                             />
                             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-white/80">
@@ -122,7 +122,7 @@ export const ChangeBalance = () => {
                         style={{ borderRadius: '50px' }} 
                         className="h-11 w-full bg-green-500 text-white text-sm font-semibold hover:bg-green-600 transition"
                     >
-                        Confirm Submit
+                        {t("CONFIRM_SUBMIT")}
                     </button>
                 </div>
             </div>

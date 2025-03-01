@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router";
 import { Conversation, Internet, Mobile, SocialBundle } from "../../icons";
+import { useTranslation } from "react-i18next";
   
 export default function PackageCard() {
+  const {t}=useTranslation()
     const navigate=useNavigate()
     const gotoInternetPackage=()=>{
         navigate('/internet')
@@ -16,7 +18,7 @@ export default function PackageCard() {
             <div className="bg-green-300 rounded-full p-6">
               <Internet className="w-10 h-10"/>
             </div>
-            <h4 className="text-center">Internet <br />Package</h4>
+            <h4 className="text-center">{t('INTERNET_PACKAGE')}</h4>
           </div>
         </div>
 
@@ -25,7 +27,7 @@ export default function PackageCard() {
             <div className="bg-blue-300 rounded-full p-6">
               <Mobile className="w-10 h-10"/>
             </div>
-            <h4 className="text-center">Mobile <br />Charging</h4>
+            <h4 className="text-center">{t('MOBILE_CHARGING')}</h4>
           </div>
         </div>
 
@@ -34,7 +36,7 @@ export default function PackageCard() {
             <div className="bg-yellow-200 rounded-full p-6">
               <Conversation className="w-10 h-10"/>
             </div>
-            <h4 className="text-center">Conversation <br />Package</h4>
+            <h4 className="text-center">{t('CONVERSATION_PACKAGE')}</h4>
           </div>
         </div>
 
@@ -43,7 +45,7 @@ export default function PackageCard() {
             <div className="bg-orange-200 rounded-full p-6">
               <SocialBundle className="w-10 h-10"/>
             </div>
-            <h4 className="text-center">Social <br />Bundle</h4>
+            <h4 className="text-center">{t('SOCIAL_BUNDLE')}</h4>
           </div>
         </div>
       </div>

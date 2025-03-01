@@ -2,24 +2,47 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTransactions } from "../../redux/actions/transactionAction";
 import { format } from "date-fns";
+import { t } from "i18next";
 
 
 export default function Transaction() {
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
     const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
     const [selectedTransaction, setSelectedTransaction] = useState(null);
     const dispatch = useDispatch();
-    const { transactionList, total_items } = useSelector((state) => state.transactionListReducer);
+    const { transactionList, total_items,per_page,current_page,total_pages } = useSelector((state) => state.transactionListReducer);
     const { user_info } = useSelector((state) => state.auth);
+    const [page, setPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [from,setForm]=useState(0)
+    const [to,setTo]=useState(0)
 
     useEffect(() => {
-        dispatch(getTransactions(page + 1, rowsPerPage));
+        dispatch(getTransactions(page , rowsPerPage));
       }, [dispatch, page, rowsPerPage]);
 
     useEffect(()=>{
         console.log(transactionList)
     },[dispatch])
+
+    
+    useEffect(() => {
+      if (current_page && per_page && total_items) {
+        const fromValue = (current_page - 1) * per_page + 1;
+        const toValue = Math.min(current_page * per_page, total_items);
+    
+        setForm(fromValue);
+        setTo(toValue);
+      }
+    }, [current_page, per_page, total_items]);
+  
+    const goToPreviousPage = () => {
+      if (page > 1) setPage(page - 1);
+    };
+  
+    const goToNextPage = () => {
+      if (page < total_pages) setPage(page + 1);
+    };
+
 
   return (
     <div className="grid grid-cols-12 gap-4 md:gap-6">
@@ -71,7 +94,7 @@ export default function Transaction() {
                         className="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-4 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring focus:ring-brand-500/10 dark:border-gray-800 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                     />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-white/80">
-                        AFN
+                        {user_info?.currency?.code}
                     </span>
                     </div>
                 </form>
@@ -87,7 +110,7 @@ export default function Transaction() {
                         className="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-4 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring focus:ring-brand-500/10 dark:border-gray-800 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                     />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-white/80">
-                        AFN
+                    {user_info?.currency?.code}
                     </span>
                     </div>
                 </form>
@@ -99,12 +122,12 @@ export default function Transaction() {
             {/* Submit Button */}
             <div className="flex items-center">
                 <button style={{borderRadius:'50px'}} className="h-8 w-full bg-blue-800 text-white text-sm font-semibold hover:bg-green-600 transition">
-                    Apply Filter
+                    {t("APPLY_FILTER")}
                 </button>
             </div>
             <div className="flex items-center">
                 <button style={{borderRadius:'50px'}} className="border border-red-500 h-8 w-full bg-white text-red-500 text-sm font-semibold hover:bg-green-600 transition">
-                    Remove Filter
+                {t("CLEAR_FILTER")}
                 </button>
             </div>
         </div>
@@ -122,12 +145,12 @@ export default function Transaction() {
                   </div>
 
                   <div className="flex flex-row justify-between items-center px-2 mt-1">
-                    <span className="text-gray-500">Transaction Type:</span>
+                    <span className="text-gray-500">{t("TRANSACTION_TYPE")}</span>
                     <span className={`${transaction.status === 'debit' ? 'bg-red-200 text-red-500' : 'bg-green-200 text-green-500'} rounded-md p-1 capitalize`} >{transaction.status}</span>
                   </div>
 
                   <div className="flex flex-row justify-between items-center px-2">
-                    <span className="text-gray-500">Amount:</span>
+                    <span className="text-gray-500">{t("AMOUNT")}</span>
                     <span className="font-bold">{user_info?.currency?.code} {transaction.amount}</span>
                   </div>
                   
@@ -138,6 +161,45 @@ export default function Transaction() {
             </div>
           ))}
         </div>
+        {/* pagination */}
+        <div className="flex flex-wrap items-center justify-end px-4 py-3 bg-white border-t-2 rounded-lg shadow-md space-x-4">
+          {/* Rows per page selection */}
+          <div className="flex items-center space-x-2 text-gray-600">
+            <span>Rows per page:</span>
+            <select className="p-1 min-w-[60px] text-gray-700">
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+            </select>
+          </div>
+
+          {/* Pagination info */}
+          <div className="text-gray-700 mx-4">{from}-{to} of {total_items}</div>
+
+          {/* Navigation buttons */}
+          <div className="flex items-center space-x-2">
+          <button 
+          className={`p-2 ${page === 1 ? "text-gray-300" : "text-gray-500 hover:text-gray-700"}`}
+          onClick={goToPreviousPage}
+          disabled={page === 1}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button 
+          className={`p-2 ${page === total_pages ? "text-gray-300" : "text-gray-700 hover:text-gray-900"}`}
+          onClick={goToNextPage}
+          disabled={page === total_pages}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+          </div>
+        </div>
+
+        {/* pagination */}
 
       </div>
     </div>

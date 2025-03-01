@@ -54,7 +54,7 @@ export const SetPassword = () => {
                                 error={validationError}
                                 hint={validationError}
                                 onChange={(e) => setNewPassword(e.target.value)} 
-                                placeholder="Enter New Password"
+                                placeholder={t("ENTER_NEW_PASSWORD")}
                                 className="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-4 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring focus:ring-brand-500/10 dark:border-gray-800 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                             />
                             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-white/80">
@@ -73,7 +73,7 @@ export const SetPassword = () => {
                                 hint={validationError}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 type="password"
-                                placeholder="Confirm Confirm Password"
+                                placeholder={t('CONFIRM_PASSWORD')}
                                 className="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-4 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring focus:ring-brand-500/10 dark:border-gray-800 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
                             />
                         </div>
@@ -86,7 +86,7 @@ export const SetPassword = () => {
                         style={{ borderRadius: '50px' }} 
                         className="h-11 w-full bg-green-500 text-white text-sm font-semibold hover:bg-green-600 transition"
                     >
-                        Confirm Submit
+                        {t("CONFIRM_SUBMIT")}
                     </button>
                 </div>
             </div>

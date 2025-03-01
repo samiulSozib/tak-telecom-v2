@@ -1,16 +1,19 @@
+import { useTranslation } from "react-i18next";
+
 export default function FirstCard() {
+  const {t}=useTranslation()
   return (
     <div className="h-[270px] rounded-2xl border border-gray-200 bg-[#C8FACD] dark:border-gray-800 dark:bg-white/[0.03] p-4 md:p-6">
       <div className="flex flex-col sm:flex-row items-center">
         
         {/* Text Section */}
         <div className="flex-1 p-4 md:p-8 text-center sm:text-left">
-          <span className="text-xl tracking-tighter font-bold text-black block">Fast and Easy support via WhatsApp</span>
+          <span className="text-xl tracking-tighter font-bold text-black block">{t('WHATSAPP_CARD_FIRST_TEXT')}</span>
           <p className="text-sm tracking-tighter text-gray-700 mt-2">
-            We are here to answer your questions and resolve your issues. Simply click the button below to chat directly with our support team on WhatsApp.
+          {t('WHATSAPP_CARD_SECOND_TEXT')}
           </p>
           <button className="mt-3 px-4 py-2 bg-green-600 rounded-lg text-white text-sm w-full sm:w-auto">
-            Contact Support
+          {t('CONTACT_SUPPORT')}
           </button>
         </div>
 
