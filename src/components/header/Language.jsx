@@ -9,6 +9,7 @@ export default function Language() {
   const { i18n } = useTranslation();
   const { languages } = useSelector((state) => state.locationReducer);
   const dispatch = useDispatch();
+  const {t}=useTranslation()
 
   useEffect(() => {
     dispatch(getLanguages());

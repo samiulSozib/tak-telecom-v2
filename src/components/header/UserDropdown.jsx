@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { logout } from '../../redux/actions/authAction';
+import { useTranslation } from "react-i18next";
 
 
 export default function UserDropdown() {
@@ -12,6 +13,7 @@ export default function UserDropdown() {
   const dispatch=useDispatch()
   const { user_info } = useSelector((state) => state.auth);
   const navigate=useNavigate()
+  const {t}=useTranslation()
 
 
   function toggleDropdown() {
@@ -23,7 +25,7 @@ export default function UserDropdown() {
   }
 
   const handleLogout = () => {
-    
+    console.log("logout")
     Swal.fire({
       title: t("DO_YOU_WANT_TO_LOGOUT"),
       icon: "warning",
