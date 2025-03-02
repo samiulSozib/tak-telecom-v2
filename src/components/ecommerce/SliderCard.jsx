@@ -25,6 +25,8 @@ export default function SliderCard() {
       <div className="h-[270px] rounded-2xl border border-gray-200 dark:border-gray-800 dark:bg-white/[0.03]">
       
         <Swiper
+          dir="ltr"
+          rtl={true}
           spaceBetween={30}
           centeredSlides={true}
           autoplay={{

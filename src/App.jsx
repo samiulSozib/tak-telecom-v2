@@ -32,6 +32,8 @@ import AddSubReseller from "./pages/SubReseller/AddSubReseller";
 import { SetPassword } from "./pages/SubReseller/SetPassword";
 import { ChangeBalance } from "./pages/SubReseller/ChangeBalance";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import TermsAndConditions from "./pages/TermsAndConditions/TermsAndConditions";
+import HelpCenter from "./pages/HelpCenter/HelpCeneter";
 
 export default function App() {
   return (
@@ -54,6 +56,8 @@ export default function App() {
             <Route path="/add-sub-reseller" element={<ProtectedRoute><AddSubReseller /></ProtectedRoute>} />
             <Route path="/sub-reseller-set-password" element={<ProtectedRoute><SetPassword /></ProtectedRoute>} />
             <Route path="/sub-reseller-change-balance" element={<ProtectedRoute><ChangeBalance /></ProtectedRoute>} />
+            <Route path="/terms-and-conditions" element={<ProtectedRoute><TermsAndConditions/></ProtectedRoute>}/>
+            <Route path="/help-center" element={<ProtectedRoute><HelpCenter/></ProtectedRoute>}/>
           
 
             {/* Others Page */}

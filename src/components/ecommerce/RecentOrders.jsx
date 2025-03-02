@@ -74,11 +74,13 @@ export default function RecentOrders() {
   const [from,setForm]=useState(0)
   const [to,setTo]=useState(0)
   const {t}=useTranslation()
+  const [filterStatus, setFilterStatus] = useState("");
+
   
 
   useEffect(() => {
-    dispatch(getOrders(page, rowsPerPage));
-  }, [dispatch, page, rowsPerPage]);
+    dispatch(getOrders(page, rowsPerPage,filterStatus));
+  }, [dispatch, page, rowsPerPage,filterStatus]);
 
 
 
@@ -114,7 +116,7 @@ export default function RecentOrders() {
 
       <div className="flex flex-col md:flex-row mb-2 gap-4">
         <div className="md:flex-1 w-full">
-          <form>
+          <form className="hidden">
             <div className="relative">
               <span className="absolute -translate-y-1/2 pointer-events-none left-4 top-1/2">
                 <svg
@@ -140,8 +142,8 @@ export default function RecentOrders() {
             </div>
           </form>
         </div>
-        <div className="md:flex-2 w-full">
-          <form>
+        <div className="md:flex-1 w-full">
+          <form className="hidden">
             <div className="relative">
               <span className="absolute -translate-y-1/2 pointer-events-none left-4 top-1/2">
                 <svg
@@ -167,6 +169,15 @@ export default function RecentOrders() {
             </div>
           </form>
         </div>
+
+        <div className="md:flex-1 w-full">
+                <select value={filterStatus} onChange={(e)=>setFilterStatus(e.target.value)} className="w-full rounded-md">
+                  <option value="">{t("ALL")}</option>
+                  <option value="0">{t("PENDING")}</option>
+                  <option value="1">{t("CONFIRMED")}</option>
+                  <option value="2">{t("REJECTED")}</option>
+                </select>
+            </div>
   
       </div>
 

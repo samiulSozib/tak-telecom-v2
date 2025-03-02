@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrders } from "../../redux/actions/orderAction";
 import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb"
+import html2canvas from "html2canvas";
 
 
 
@@ -70,6 +71,102 @@ export default function Order() {
         { label: t('ORDERS'), href: "/orders" },
       ];
 
+      const modalRef = useRef(null);
+
+
+      const handleShare = async () => {
+        if (modalRef.current) {
+          try {
+            const canvas = await html2canvas(modalRef.current);
+            canvas.toBlob((blob) => {
+              if (blob) {
+                const file = new File([blob], 'order_details.png', { type: 'image/png' });
+                const data = {
+                  files: [file],
+                  title: 'Order Details',
+                  text: 'Check out this order details!',
+                };
+                if (navigator.canShare && navigator.canShare(data)) {
+                  navigator.share(data).catch((error) => {
+                    console.error('Sharing failed:', error);
+                    alert('Sharing failed. Please try again.');
+                  });
+                } else {
+                  alert('Sharing is not supported in this browser.');
+                }
+              }
+            });
+          } catch (error) {
+            console.error('Error capturing modal content:', error);
+            alert('Failed to capture modal content. Please try again.');
+          }
+        }
+      };
+
+      
+      // const handleDownload = async () => {
+      //   if (modalRef.current) {
+      //     try {
+      //       // Wait for all images to load
+      //       const images = modalRef.current.querySelectorAll('img');
+      //       const imageLoadPromises = Array.from(images).map(
+      //         (img) =>
+      //           new Promise((resolve, reject) => {
+      //             if (img.complete) {
+      //               resolve();
+      //             } else {
+      //               img.onload = resolve;
+      //               img.onerror = reject;
+      //             }
+      //           })
+      //       );
+      
+      //       await Promise.all(imageLoadPromises);
+      
+      //       // Capture the modal content
+      //       const canvas = await html2canvas(modalRef.current, {
+      //         useCORS: true, // Enable cross-origin images
+      //         logging: true, // Enable logging for debugging
+      //         scale: 2, // Increase scale for better quality
+      //         allowTaint: true, // Allow tainted images
+      //       });
+      
+      //       // Download the image
+      //       const link = document.createElement('a');
+      //       link.href = canvas.toDataURL('image/png');
+      //       link.download = 'order_details.png';
+      //       link.click();
+      //     } catch (error) {
+      //       console.error('Error capturing modal content:', error);
+      //       alert('Failed to capture modal content. Please try again.');
+      //     }
+      //   }
+      // };
+
+      const handleDownload = () => {
+        // Ensure the page or modal content has the correct RTL direction
+        const canvasParent = modalRef.current;
+        canvasParent.style.direction = "rtl"; // Force RTL direction for correct Arabic rendering
+        
+        html2canvas(canvasParent, {
+          useCORS: true, // Enable CORS to load external resources
+          allowTaint: true, // Allow tainting of external resources
+          backgroundColor: null, // Keep the background transparent
+          textRendering: "geometricPrecision", // Improve text rendering quality
+          logging: true, // Enable logging for debugging issues
+        }).then((canvas) => {
+          const imgData = canvas.toDataURL("image/png");
+          
+          // Debugging: To inspect the canvas content in the console
+          //console.log(canvas);
+      
+          // Create a link to download the image
+          const link = document.createElement("a");
+          link.href = imgData;
+          link.download =  `${selectedOrder.rechargeble_account}.png`; // Filename for the image
+          link.click(); // Trigger download
+        });
+      };
 
   return (
     <div className="grid grid-cols-12 gap-4 md:gap-6">
@@ -83,8 +180,8 @@ export default function Order() {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Phone Number Input */}
-            <div className="bg-white rounded-lg">
-                <form>
+            <div className="bg-[#EEF4FF] rounded-lg">
+                <form className="hidden">
                     <div className="relative">
                     <span className="absolute left-4 top-1/2 -translate-y-1/2">
                         <svg
@@ -112,8 +209,8 @@ export default function Order() {
             </div>
 
             {/* Transfer Amount Input */}
-            <div className="bg-white rounded-lg">
-                <form>
+            <div className="bg-[#EEF4FF] rounded-lg">
+                <form className="hidden">
                     <div className="relative">
                     <input
                         type="text"
@@ -128,19 +225,13 @@ export default function Order() {
             </div>
 
             {/* Submit Button */}
-            <div className="bg-white rounded-lg">
-                <form>
-                    <div className="relative">
-                    <input
-                        type="text"
-                        placeholder="Transfer amount"
-                        className="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-4 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring focus:ring-brand-500/10 dark:border-gray-800 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
-                    />
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-white/80">
-                        {user_info?.currency?.code}
-                    </span>
-                    </div>
-                </form>
+            <div className="bg-white rounded-md w-full">
+                <select value={filterStatus} onChange={(e)=>setFilterStatus(e.target.value)} className="w-full rounded-md">
+                  <option value="">{t("ALL")}</option>
+                  <option value="0">{t("PENDING")}</option>
+                  <option value="1">{t("CONFIRMED")}</option>
+                  <option value="2">{t("REJECTED")}</option>
+                </select>
             </div>
         </div>
 
@@ -250,7 +341,7 @@ export default function Order() {
       {modalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-4 rounded-lg shadow-lg w-full sm:w-[90%] md:w-[80%] lg:w-80 text-left m-2">
-          <div className={`border ${selectedOrder.status === 2 ? "border-red-500" : selectedOrder.status === 1 ? "border-green-500" : "border-yellow-500"} rounded-md flex flex-col gap-3`}>
+          <div ref={modalRef} className={`border ${selectedOrder.status === 2 ? "border-red-500" : selectedOrder.status === 1 ? "border-green-500" : "border-yellow-500"} rounded-md flex flex-col gap-3`}>
 
               <div className="flex items-center justify-center mt-3">
                 <img src={selectedOrder.status===0?'/images/img/Pending.png':selectedOrder.status===1?"/images/img/Success.png":"/images/img/Unsuccess.png"} alt="" className="w-[70px] h-[70px] object-contain"/>
@@ -281,6 +372,7 @@ export default function Order() {
                   src={selectedOrder?.bundle.service.company.company_logo} 
                   alt="Logo" 
                   className="h-12 w-12 rounded-lg object-contain"
+                  
                 />
 
                 {/* Date & Time Section */}
@@ -300,8 +392,8 @@ export default function Order() {
             </div>
 
             <div className="flex flex-row gap-3 justify-between items-center">
-              <button className="rounded-[50px] bg-blue-700 m-3 px-5 py-2 w-[120px] text-white text-center">{t("SHARE")}</button>
-              <button className="rounded-[50px] bg-white m-3 px-5 py-2 w-[120px] text-blue-700 text-center border-2 border-blue-700">{t("DOWNLOAD")}</button>
+              <button onClick={handleShare} className="rounded-[50px] bg-blue-700 m-3 px-5 py-2 w-[120px] text-white text-center">{t("SHARE")}</button>
+              <button onClick={handleDownload} className="rounded-[50px] bg-white m-3 px-5 py-2 w-[120px] text-blue-700 text-center border-2 border-blue-700">{t("DOWNLOAD")}</button>
             </div>
 
             <div className="flex flex-row justify-center">

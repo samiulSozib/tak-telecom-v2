@@ -70,7 +70,7 @@ const othersItems= [
   {
     icon: <UserCircleIcon />,
     name: "TERMS_AND_CONDITIONS",
-    path: "/terms-and-policy",
+    path: "/terms-and-conditions",
   },
   {
     icon: <UserIcon />,
@@ -280,7 +280,7 @@ const AppSidebar = () => {
 
   return (
     <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
+      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-[calc(100vh-4rem)] sm:h-screen  transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
         ${isExpanded || isMobileOpen ? "w-[290px]" : isHovered ? "w-[290px]" : "w-[90px]"}
         ${isMobileOpen ? "translate-x-0" : isRtl ? "translate-x-full" : "-translate-x-full"}
         lg:translate-x-0

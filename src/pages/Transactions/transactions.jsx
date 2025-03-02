@@ -60,7 +60,7 @@ export default function Transaction() {
 
       <div className="border rounded-md bg-[#EEF4FF] col-span-12 space-y-6 xl:col-span-12 p-2">
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="hidden grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Phone Number Input */}
             <div className="bg-white rounded-lg">
                 <form>
@@ -123,7 +123,7 @@ export default function Transaction() {
             </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="hidden grid grid-cols-1 sm:grid-cols-2 gap-3">
             
             {/* Submit Button */}
             <div className="flex items-center">

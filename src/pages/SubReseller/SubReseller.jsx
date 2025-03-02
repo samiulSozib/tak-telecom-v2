@@ -123,8 +123,8 @@ export default function SubReseller() {
       <div className="border rounded-md bg-white col-span-12 space-y-6 xl:col-span-12 p-4">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Phone Number Input */}
-            <div>
-            <form>
+            <div className="">
+            <form className="hidden">
                 <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2">
                     <svg
@@ -152,8 +152,8 @@ export default function SubReseller() {
             </div>
 
             {/* Transfer Amount Input */}
-            <div>
-            <form>
+            <div className="">
+            <form className="hidden">
                 <div className="relative">
                 <input
                     type="text"
@@ -168,7 +168,7 @@ export default function SubReseller() {
             </div>
 
             {/* Submit Button */}
-            <div className="flex items-center">
+            <div className="flex items-center justify-items-end">
             <button onClick={addSubReseller} style={{borderRadius:'50px'}} className="h-11 w-full bg-green-500 text-white text-sm font-semibold hover:bg-green-600 transition">
                 {t("ADD_SUB_RESELLER")}
             </button>

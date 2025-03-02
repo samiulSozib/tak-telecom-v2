@@ -263,8 +263,8 @@ const handleRecharge=()=>{
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Phone Number Input */}
-            <div className="bg-white rounded-lg">
-                <form>
+            <div className="bg-[#EEF4FF] rounded-lg">
+                <form className="hidden">
                     <div className="relative">
                     <span className="absolute left-4 top-1/2 -translate-y-1/2">
                         <svg
@@ -292,8 +292,8 @@ const handleRecharge=()=>{
             </div>
 
             {/* Transfer Amount Input */}
-            <div className="bg-white rounded-lg">
-                <form>
+            <div className="bg-[#EEF4FF] rounded-lg">
+                <form className="hidden">
                     <div className="relative">
                     <input
                         type="text"
@@ -309,18 +309,12 @@ const handleRecharge=()=>{
 
             {/* Submit Button */}
             <div className="bg-white rounded-lg">
-                <form>
-                    <div className="relative">
-                    <input
-                        type="text"
-                        placeholder="Transfer amount"
-                        className="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-4 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring focus:ring-brand-500/10 dark:border-gray-800 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
-                    />
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-white/80">
-                        AFN
-                    </span>
-                    </div>
-                </form>
+              <select value={filterStatus} onChange={(e)=>setFilterStatus(e.target.value)} className="w-full rounded-md">
+                  <option value="">{t("ALL")}</option>
+                  <option value="0">{t("PENDING")}</option>
+                  <option value="1">{t("CONFIRMED")}</option>
+                  <option value="2">{t("REJECTED")}</option>
+                </select>
             </div>
         </div>
 
@@ -333,7 +327,7 @@ const handleRecharge=()=>{
                 </button>
             </div>
             <div className="flex items-center">
-                <button style={{borderRadius:'50px'}} className="border border-red-500 h-8 w-full bg-white text-red-500 text-sm font-semibold hover:bg-green-600 transition">
+                <button style={{borderRadius:'50px'}} className="border border-red-500 h-8 w-full bg-white text-red-500 text-sm font-semibold hover:bg-green-600 hover:text-white transition">
                     {t("CLEAR_FILTER")}
                 </button>
             </div>
@@ -395,7 +389,7 @@ const handleRecharge=()=>{
               <div className={`${selectedOrder.status === 2? "bg-red-100 border-red-500": selectedOrder.status === 1? "bg-green-100 border-green-500": "bg-yellow-100 border-yellow-500"} border rounded-lg p-3 flex items-center m-3`}>
                 {/* Icon on the Left */}
                 <img 
-                  src="/images/img/whatsapp.png" 
+                  src={selectedOrder?.bundle.service.company.company_logo} 
                   alt="Logo" 
                   className="h-12 w-12 rounded-lg object-contain"
                 />
